@@ -15,13 +15,13 @@ namespace Domain.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        public DbSet<CategoryEntity> Categories { get; set; }
-        public DbSet<IngredientEntity> Ingredients { get; set; }
-        public DbSet<ProductSizeEntity> ProductSizes { get; set; }
-        public DbSet<ProductEntity> Products { get; set; }
-        public DbSet<ProductIngredientEntity> ProductIngredients { get; set; }
-        public DbSet<ProductImageEntity> ProductImages { get; set; }
-        public DbSet<CartEntity> Carts { get; set; }
+        //public DbSet<CategoryEntity> Categories { get; set; }
+        //public DbSet<IngredientEntity> Ingredients { get; set; }
+        //public DbSet<ProductSizeEntity> ProductSizes { get; set; }
+        //public DbSet<ProductEntity> Products { get; set; }
+        //public DbSet<ProductIngredientEntity> ProductIngredients { get; set; }
+        //public DbSet<ProductImageEntity> ProductImages { get; set; }
+        //public DbSet<CartEntity> Carts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -46,11 +46,11 @@ namespace Domain.Data
                     .IsRequired();
             });
 
-            builder.Entity<ProductIngredientEntity>()
-                .HasKey(pi => new { pi.ProductId, pi.IngredientId });
+            //builder.Entity<ProductIngredientEntity>()
+            //    .HasKey(pi => new { pi.ProductId, pi.IngredientId });
 
-            builder.Entity<CartEntity>()
-                .HasKey(pi => new { pi.ProductId, pi.UserId });
+            //builder.Entity<CartEntity>()
+            //    .HasKey(pi => new { pi.ProductId, pi.UserId });
         }
     }
 }

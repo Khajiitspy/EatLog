@@ -30,93 +30,93 @@ namespace Core.Extensions
 
             context.Database.Migrate();
 
-            if (!context.Categories.Any())
-            {
-                var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Categories.json");
-                if (File.Exists(jsonFile))
-                {
-                    var jsonData = await File.ReadAllTextAsync(jsonFile);
-                    try
-                    {
-                        var categories = JsonSerializer.Deserialize<List<SeederCategoryModel>>(jsonData);
-                        var entityItems = mapper.Map<List<CategoryEntity>>(categories);
-                        foreach (var entity in entityItems)
-                        {
-                            entity.Image =
-                                await imageService.SaveImageFromUrlAsync(entity.Image);
-                        }
+            //if (!context.Categories.Any())
+            //{
+            //    var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Categories.json");
+            //    if (File.Exists(jsonFile))
+            //    {
+            //        var jsonData = await File.ReadAllTextAsync(jsonFile);
+            //        try
+            //        {
+            //            var categories = JsonSerializer.Deserialize<List<SeederCategoryModel>>(jsonData);
+            //            var entityItems = mapper.Map<List<CategoryEntity>>(categories);
+            //            foreach (var entity in entityItems)
+            //            {
+            //                entity.Image =
+            //                    await imageService.SaveImageFromUrlAsync(entity.Image);
+            //            }
 
-                        await context.Categories.AddRangeAsync(entityItems);
-                        await context.SaveChangesAsync();
+            //            await context.Categories.AddRangeAsync(entityItems);
+            //            await context.SaveChangesAsync();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error Json Parse Data {0}", ex.Message);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Not Found File Categories.json");
-                }
-            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine("Error Json Parse Data {0}", ex.Message);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Not Found File Categories.json");
+            //    }
+            //}
 
-            if (!context.Ingredients.Any())
-            {
-                var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Ingredients.json");
-                if (File.Exists(jsonFile))
-                {
-                    var jsonData = await File.ReadAllTextAsync(jsonFile);
-                    try
-                    {
-                        var ingredients = JsonSerializer.Deserialize<List<SeederIngredientModel>>(jsonData);
-                        var entityItems = mapper.Map<List<IngredientEntity>>(ingredients);
-                        foreach (var entity in entityItems)
-                        {
-                            entity.Image =
-                                await imageService.SaveImageFromUrlAsync(entity.Image);
-                        }
+            //if (!context.Ingredients.Any())
+            //{
+            //    var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Ingredients.json");
+            //    if (File.Exists(jsonFile))
+            //    {
+            //        var jsonData = await File.ReadAllTextAsync(jsonFile);
+            //        try
+            //        {
+            //            var ingredients = JsonSerializer.Deserialize<List<SeederIngredientModel>>(jsonData);
+            //            var entityItems = mapper.Map<List<IngredientEntity>>(ingredients);
+            //            foreach (var entity in entityItems)
+            //            {
+            //                entity.Image =
+            //                    await imageService.SaveImageFromUrlAsync(entity.Image);
+            //            }
 
-                        await context.Ingredients.AddRangeAsync(entityItems);
-                        await context.SaveChangesAsync();
+            //            await context.Ingredients.AddRangeAsync(entityItems);
+            //            await context.SaveChangesAsync();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error Json Parse Data {0}", ex.Message);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Not Found File Categories.json");
-                }
-            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine("Error Json Parse Data {0}", ex.Message);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Not Found File Categories.json");
+            //    }
+            //}
 
-            if (!context.ProductSizes.Any())
-            {
-                var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "ProductSizes.json");
-                if (File.Exists(jsonFile))
-                {
-                    var jsonData = await File.ReadAllTextAsync(jsonFile);
-                    try
-                    {
-                        var productSizes = JsonSerializer.Deserialize<List<SeederProductSizeModel>>(jsonData);
-                        var entityItems = mapper.Map<List<ProductSizeEntity>>(productSizes);
+            //if (!context.ProductSizes.Any())
+            //{
+            //    var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "ProductSizes.json");
+            //    if (File.Exists(jsonFile))
+            //    {
+            //        var jsonData = await File.ReadAllTextAsync(jsonFile);
+            //        try
+            //        {
+            //            var productSizes = JsonSerializer.Deserialize<List<SeederProductSizeModel>>(jsonData);
+            //            var entityItems = mapper.Map<List<ProductSizeEntity>>(productSizes);
 
-                        await context.ProductSizes.AddRangeAsync(entityItems);
-                        await context.SaveChangesAsync();
+            //            await context.ProductSizes.AddRangeAsync(entityItems);
+            //            await context.SaveChangesAsync();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error Json Parse Data {0}", ex.Message);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Not Found File Categories.json");
-                }
-            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine("Error Json Parse Data {0}", ex.Message);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Not Found File Categories.json");
+            //    }
+            //}
 
             if (!context.Roles.Any())
             {

@@ -100,13 +100,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISMTPService, SMTPService>();
-builder.Services.AddScoped<IUserService, UserService>();
 
 // -------------------- OpenAPI --------------------
 
@@ -179,6 +175,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Seed
-await app.SeedDataAsync();
+//await app.SeedDataAsync();
 
 await app.RunAsync();

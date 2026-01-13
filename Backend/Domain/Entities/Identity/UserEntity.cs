@@ -12,7 +12,6 @@ namespace Domain.Data.Entities.Identity
         public string? Image { get; set; } = null;
 
         public virtual ICollection<UserRoleEntity>? UserRoles { get; set; }
-        public ICollection<CartEntity>? Carts { get; set; }
         public virtual ICollection<UserLoginEntity>? UserLogins { get; set; }
     }
 }
