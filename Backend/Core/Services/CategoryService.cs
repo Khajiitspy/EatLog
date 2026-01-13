@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 using Core.Interfaces;
-using Core.Model.Category;
+using Core.Model.Recipe.Category;
 using Domain.Data;
 using Domain.Data.Entities;
 using MailKit;

@@ -1,6 +1,6 @@
 ﻿
 using AutoMapper;
-using Core.Model.Category;
+using Core.Model.Recipe.Category;
 using Core.Model.Seeder;
 using Domain.Data.Entities;
 

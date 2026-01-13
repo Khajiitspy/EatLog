@@ -1,6 +1,4 @@
-﻿
-
-using Core.Model.Category;
+﻿using Core.Model.Recipe.Category;
 
 namespace Core.Interfaces;
 

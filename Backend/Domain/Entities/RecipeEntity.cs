@@ -8,7 +8,9 @@ namespace Domain.Entities;
 [Table("tblRecipes")]
 public class RecipeEntity : BaseEntity<long>
 {
-    public string Instruction { get; set; } = String.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Instruction { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
     public string Image { get; set; } = string.Empty;
 
     [ForeignKey("Category")]

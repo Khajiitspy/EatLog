@@ -1,6 +1,4 @@
-﻿
-
-namespace Core.Model.Category;
+﻿namespace Core.Model.Recipe.Category;
 
 public class CategoryItemModel
 {

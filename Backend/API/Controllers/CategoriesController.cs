@@ -1,5 +1,5 @@
 ﻿using Core.Interfaces;
-using Core.Model.Category;
+using Core.Model.Recipe.Category;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

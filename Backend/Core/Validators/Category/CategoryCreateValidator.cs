@@ -1,5 +1,4 @@
-﻿
-using Core.Model.Category;
+﻿using Core.Model.Recipe.Category;
 using Domain.Data;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
