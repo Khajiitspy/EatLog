@@ -11,6 +11,7 @@ namespace Domain.Data.Entities.Identity
         public string? LastName { get; set; } = null;
         public string? Image { get; set; } = null;
 
+        public virtual ICollection<RecipeEntity>? Recipes { get; set; }
         public virtual ICollection<UserRoleEntity>? UserRoles { get; set; }
         public virtual ICollection<UserLoginEntity>? UserLogins { get; set; }
     }
