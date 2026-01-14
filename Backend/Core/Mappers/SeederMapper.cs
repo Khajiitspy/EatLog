@@ -14,6 +14,7 @@ namespace Core.Interfaces
                 .ForMember(x => x.Image, opt => opt.Ignore());
             CreateMap<SeederCategoryModel, CategoryEntity>();
             CreateMap<SeederIngredientModel, IngredientEntity>();
+            CreateMap<SeederIngredientUnitModel, IngredientUnitEntity>();
         }
     }
 }
