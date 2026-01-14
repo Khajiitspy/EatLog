@@ -9,6 +9,10 @@ namespace API.Helpers.Extensions
         {
             var config = app.Configuration;
 
+            #region Compression
+            app.UseResponseCompression();
+            #endregion
+
             #region CORS
             app.UseCors("AllowAll");
             #endregion
