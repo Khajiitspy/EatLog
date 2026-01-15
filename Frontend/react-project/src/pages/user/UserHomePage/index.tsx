@@ -7,7 +7,7 @@ const UserHomePage: React.FC = () => {
     return (
         <div className="w-full">
             {/* Hero Section */}
-            <section className="relative h-[500px] flex items-center justify-center rounded-3xl m-4 overflow-hidden shadow-xl">
+            <section className="relative h-[500px] flex items-center border-t border-gray-200 dark:border-gray-800 justify-center rounded-3xl m-4 overflow-hidden shadow-xl">
 
                 {/* --- НОВЕ: Фонове зображення --- */}
                 {/* absolute inset-0 розтягує картинку на весь блок. object-cover обрізає її, щоб заповнити простір без деформації */}
@@ -44,14 +44,7 @@ const UserHomePage: React.FC = () => {
             </section>
 
             {/* Future content section */}
-            <section className="max-w-screen-xl mx-auto px-4 py-20">
-                <h2 className="text-3xl font-bold text-heading mb-6">
-                    Why Recipe Project?
-                </h2>
-                <p className="text-body max-w-3xl">
-                    Save your favorite meals, manage shopping lists, and get inspired
-                    by recipes from other users.
-                </p>
+            <section>
             </section>
         </div>
     );

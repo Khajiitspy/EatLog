@@ -13,30 +13,25 @@ import React, { useState } from "react";
 
 
 
-// const { Panel } = Collapse;
 
-const Sidebar: React.FC = () => {
-    // const { data: topics, isLoading, isError } = useGetRootTopicsQuery();
-
+const MainSideBar: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
-
     const toggleSidebar = () => setCollapsed(!collapsed);
-
     return (
         <aside
-            className={`h-screen left-0 bg-yellow-100  text-gray-800  flex flex-col border-r border-gray-200 dark:border-gray-800 overflow-y-auto px-3 py-4 transition-all duration-300 ${
-                collapsed ? "w-19" : "w-64"}`}
+            className={`h-screen  bg-amber-300  text-gray-800  flex flex-col border-r  border-gray-200 dark:border-gray-800 overflow-y-auto px-3 py-4 transition-all duration-300 ${
+                collapsed ? "w-16" : "w-64"}`}
         >
-            <div className="flex justify-end">
+            <div className={`flex ${collapsed ? "justify-center" : "justify-end"}`}>
                 <button
                     onClick={toggleSidebar}
-                    className="text-gray-800  hover:text-gray-400 dark:hover:text-gray-200 transition"
+                    className="text-gray-800 hover:text-gray-400 dark:hover:text-gray-200 transition p-2"
                 >
                     <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
                 </button>
             </div>
 
-            <nav className="space-y-1 mb-6">
+            <nav className="space-y-2 mb-6">
                 <Link
                     to="/"
                     className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-gray-400  transition"
@@ -88,4 +83,4 @@ const Sidebar: React.FC = () => {
     );
 };
 
-export default Sidebar;
+export default MainSideBar;

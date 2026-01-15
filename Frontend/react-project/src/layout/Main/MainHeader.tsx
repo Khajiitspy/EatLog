@@ -2,9 +2,9 @@ import { Link } from "react-router";
 
 export const MainHeader = () => {
     return (
-        <header className="w-full py-2 px-6 bg-yellow-100  shadow-md flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
+        <header className="w-full py-2 px-6 bg-amber-300  shadow-md flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
             <div className="hidden items-center gap-1 lg:flex">
-                <Link to="/" className="text-2xl font-semibold font-['Comic_Sans_MS'] text-gray-800 ">
+                <Link to="/" className="text-2xl font-semibold  text-gray-800 ">
                     EatLog
                 </Link>
             </div>
