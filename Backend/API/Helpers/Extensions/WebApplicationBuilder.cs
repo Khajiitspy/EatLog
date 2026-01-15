@@ -112,6 +112,8 @@ namespace API.Helpers.Extensions
             services.AddScoped<ISMTPService, SMTPService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICacheService, CacheService>();
+            builder.Services.AddScoped<IIngredientService, IngredientService>();
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
             #endregion
 
             #region OpenAPI
