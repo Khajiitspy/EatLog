@@ -6,7 +6,7 @@ import UserHomePage from "./pages/user/UserHomePage";
 import RegisterPage from "./pages/account/RegisterPage.tsx";
 import LoginPage from "./pages/account/LoginPage.tsx";
 // import CreateRecipePage from './pages/recipe/CreateRecipePage.tsx';
-// import RecipePage from './pages/recipe/RecipesPage/index.tsx';
+import RecipesPage from './pages/recipe/RecipesPage.tsx';
 
 function App() {
 
@@ -15,8 +15,9 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<UserHomePage/>} />
-                    <Route path="account/register" element={<RegisterPage />} />
-                    <Route path="account/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/recipes" element={<RecipesPage />} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage/>} />

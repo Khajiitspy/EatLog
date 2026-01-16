@@ -1,8 +1,9 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {APP_ENV} from "../env";
 
-export const createBaseQuery = (controller: string) =>
+export const createBaseQuery = (endpoint: string) =>
   fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_API_URL}/api/${controller}`,
+    baseUrl: `${APP_ENV.API_BASE_URL}/api/${endpoint}`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
