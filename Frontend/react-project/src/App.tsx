@@ -5,7 +5,7 @@ import NotFoundPage from "./pages/common/NotFoundPage.tsx";
 import UserHomePage from "./pages/user/UserHomePage";
 import RegisterPage from "./pages/account/RegisterPage.tsx";
 import LoginPage from "./pages/account/LoginPage.tsx";
-// import CreateRecipePage from './pages/recipe/CreateRecipePage.tsx';
+import RecipeCreatePage from './pages/recipe/RecipeCreatePage.tsx';
 import RecipesPage from './pages/recipe/RecipesPage.tsx';
 
 function App() {
@@ -15,9 +15,12 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<UserHomePage/>} />
+
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
+
                     <Route path="/recipes" element={<RecipesPage />} />
+                    <Route path="/recipes/create" element={<RecipeCreatePage />} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage/>} />
