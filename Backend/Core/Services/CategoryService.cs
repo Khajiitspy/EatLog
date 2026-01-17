@@ -1,10 +1,12 @@
-
 using AutoMapper;
+using Core.Builders;
+using Core.Constants;
 using Core.Interfaces;
 using Core.Model.Recipe.Category;
+using Core.Model.Search;
+using Core.Model.Search.Requests;
 using Domain.Data;
 using Domain.Data.Entities;
-using MailKit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services;
@@ -15,10 +17,7 @@ public class CategoryService(
         IImageService imageService,
         ICacheService cache) : ICategoryService
 {
-    private const string ListCacheKey = "categories_all";
-    private const string ItemCacheKeyPrefix = "category_";
-    private const int ListCacheTtlMinutes = 10;
-    private const int ItemCacheTtlMinutes = 5;
+    
 
     public async Task<CategoryItemModel> CreateAsync(CategoryCreateModel model)
     {
@@ -32,7 +31,7 @@ public class CategoryService(
         await context.Categories.AddAsync(entity);
         await context.SaveChangesAsync();
 
-        cache.Remove(ListCacheKey);
+        cache.Remove(CacheKeys.CategoryListCacheKey);
 
         return mapper.Map<CategoryItemModel>(entity);
     }
@@ -50,8 +49,8 @@ public class CategoryService(
 
         await context.SaveChangesAsync();
 
-        cache.Remove(ListCacheKey);
-        cache.Remove($"{ItemCacheKeyPrefix}{model.Id}");
+        cache.Remove(CacheKeys.CategoryListCacheKey);
+        cache.Remove($"{CacheKeys.CategoryItemCacheKeyPrefix}{model.Id}");
 
         return mapper.Map<CategoryItemModel>(existing);
     }
@@ -63,30 +62,50 @@ public class CategoryService(
         entity.IsDeleted = true;
         await context.SaveChangesAsync();
 
-        cache.Remove(ListCacheKey);
-        cache.Remove($"{ItemCacheKeyPrefix}{id}");
+        cache.Remove(CacheKeys.CategoryListCacheKey);
+        cache.Remove($"{CacheKeys.CategoryItemCacheKeyPrefix}{id}");
     }
     public async Task<CategoryItemModel?> GetItemByIdAsync(long id)
     {
-        var key = $"{ItemCacheKeyPrefix}{id}";
+        var key = $"{CacheKeys.CategoryItemCacheKeyPrefix}{id}";
         return await cache.GetOrCreateAsync(
             key,
             async () => await mapper
                 .ProjectTo<CategoryItemModel>(context.Categories.Where(x => x.Id == id && !x.IsDeleted))
                 .SingleOrDefaultAsync(),
-            TimeSpan.FromMinutes(ItemCacheTtlMinutes)
+            TimeSpan.FromMinutes(CacheKeys.ItemCacheTtlMinutes)
         );
     }
     public async Task<List<CategoryItemModel>> ListAsync()
     {
         return await cache.GetOrCreateAsync(
-            ListCacheKey,
+            CacheKeys.CategoryListCacheKey,
             async () => await mapper.ProjectTo<CategoryItemModel>(
                     context.Categories
                            .Where(x => !x.IsDeleted)
                            .OrderBy(x => x.Id))
                 .ToListAsync(),
-            TimeSpan.FromMinutes(ListCacheTtlMinutes)
+            TimeSpan.FromMinutes(CacheKeys.ListCacheTtlMinutes)
         );
+    }
+    public async Task<List<PagedResult<CategoryItemModel>>> ListAsync(CategorySearchRequest request)
+    {
+        var result = await new CategoryBuilder(context.Categories.AsQueryable())
+        .ApplyRequest(request)
+        .OrderBy(c => c.Name)
+        .BuildAsync();
+
+        var items = mapper.Map<List<CategoryItemModel>>(result.Items);
+
+        return new List<PagedResult<CategoryItemModel>>
+        {
+            new PagedResult<CategoryItemModel>
+            {
+                Items = items,
+                TotalItems = result.TotalItems,
+                PageNumber = result.PageNumber,
+                PageSize = result.PageSize
+            }
+        };
     }
 }

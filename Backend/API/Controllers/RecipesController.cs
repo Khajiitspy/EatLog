@@ -1,6 +1,7 @@
-﻿using Core.Interfaces;
+using Core.Interfaces;
 using Core.Model.Recipe;
 using Core.Model.Recipe.Category;
+using Core.Model.Search.Requests;
 using Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,12 @@ namespace API.Controllers
         {
             var recipe = await recipeService.CreateAsync(model);
             return Ok(recipe);
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> List([FromQuery] RecipeSearchRequest request)
+        {
+            var recipes = await recipeService.ListAsync(request);
+            return Ok(recipes);
         }
         [HttpGet]
         public async Task<IActionResult> List()
