@@ -1,6 +1,30 @@
-import { Link } from "react-router";
+import {Link, useNavigate} from "react-router";
+import {useAppDispatch, useAppSelector} from "../../store";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import {logout} from "../../store/authSlice.ts";
+import {faLock, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {APP_ENV} from "../../env";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+
 
 export const MainHeader = () => {
+    const { user } = useAppSelector(state=>state.auth);
+
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+
+    function logoutUser() {
+        dispatch(logout());
+        navigate('/');
+    }
+
+    function openProfile(){
+        navigate("/profile");
+    }
+
+
     return (
         <header className="w-full py-2 px-6 bg-amber-300  shadow-md flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
             <div className="hidden items-center gap-1 lg:flex">
@@ -9,23 +33,136 @@ export const MainHeader = () => {
                 </Link>
             </div>
 
-            <div className="flex items-center">
-                <Link
-                    to="/account/login"
-                    className="text-gray-700 hover:text-gray-500  font-semibold py-2 px-2 rounded-full transition-all duration-300"
-                >
-                    Login
-                </Link>
 
-                <span className="text-gray-700">/</span>
+            <nav className="flex items-center gap-4">
+                {user ? (
+                    user.roles.includes("Admin") ? (
+                        <DropdownMenu.Root>
+                            <DropdownMenu.Trigger asChild>
+                                <button className="flex items-center gap-2 focus:outline-none">
+                                    <img
+                                        src={`${APP_ENV.IMAGES_50_URL}${user?.image}`}
+                                        alt="Avatar"
+                                        className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+                                    />
+                                </button>
+                            </DropdownMenu.Trigger>
 
-                <Link
-                    to="/account/register"
-                    className="text-gray-700 hover:text-gray-500 font-semibold py-2 px-2 rounded-full transition-all duration-300"
-                >
-                    Sign up
-                </Link>
-            </div>
+                            <DropdownMenu.Content
+                                sideOffset={8}
+                                className="z-50 mt-2 min-w-[140px] min-h-[160px] mr-3 bg-white rounded-md shadow-lg border border-gray-200 p-1"
+                            >
+
+                                <div className="text-gray-600 text-sm px-3 py-2 border-b border-gray-200">
+                                    {user.email}
+                                </div>
+                                <DropdownMenu.Item
+                                    onClick={openProfile}
+                                    className="flex items-center text-black
+                                    hover:bg-gray-200  py-2 rounded
+                                    cursor-pointer text-sm transition-colors">
+                                    <FontAwesomeIcon
+                                        icon={faUser}
+                                        className="text-black w-5 h-5 mr-3"
+                                    />
+                                    Профіль
+                                </DropdownMenu.Item>
+
+                                <DropdownMenu.Item asChild>
+                                    <Link
+                                        to="/Admin/home"
+                                        className="flex items-center text-black
+                                    hover:bg-gray-200  py-2 rounded
+                                    cursor-pointer text-sm transition-colors border-b">
+                                        <FontAwesomeIcon
+                                            icon={faLock}
+                                            className="text-black w-5 h-5 mr-3"
+                                        />
+                                        Адмін панель
+                                    </Link>
+                                </DropdownMenu.Item>
+
+                                <DropdownMenu.Item
+                                    onClick={logoutUser}
+                                    className="flex items-center  text-black
+                                    hover:bg-gray-200  py-2 rounded
+                                    cursor-pointer text-sm transition-colors">
+                                    <FontAwesomeIcon
+                                        icon={faRightFromBracket}
+                                        className="text-black w-5 h-5 mr-3"
+                                    />
+                                    Вийти
+                                </DropdownMenu.Item>
+
+                            </DropdownMenu.Content>
+                        </DropdownMenu.Root>
+                    ) : (
+                        <DropdownMenu.Root>
+                            <DropdownMenu.Trigger asChild>
+                                <button className="flex items-center gap-2 focus:outline-none">
+                                    <img
+                                        src={`${APP_ENV.IMAGES_50_URL}${user?.image}`}
+                                        alt="Avatar"
+                                        className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+                                    />
+                                </button>
+                            </DropdownMenu.Trigger>
+
+                            <DropdownMenu.Content
+                                sideOffset={8}
+                                className="z-50 mt-2 min-w-[140px] mr-3 bg-white rounded-md shadow-lg border border-gray-200 p-1"
+                            >
+                                <div className="text-gray-600 text-sm px-3 py-2 border-b border-gray-200">
+                                    {user.email}
+                                </div>
+
+                                <DropdownMenu.Item
+                                    onClick={openProfile}
+                                    className="flex items-center text-black
+                                    hover:bg-gray-200  py-2 rounded
+                                    cursor-pointer text-sm transition-colors border-b">
+                                    <FontAwesomeIcon
+                                        icon={faUser}
+                                        className="text-black w-5 h-5 mr-3"
+                                    />
+                                    Профіль
+                                </DropdownMenu.Item>
+
+                                <DropdownMenu.Item
+                                    onClick={logoutUser}
+                                    className="flex items-center  text-black
+                                    hover:bg-gray-200  py-2 rounded
+                                    cursor-pointer text-sm transition-colors">
+                                    <FontAwesomeIcon
+                                        icon={faRightFromBracket}
+                                        className="text-black w-5 h-5 mr-3"
+                                    />
+                                    Вийти
+                                </DropdownMenu.Item>
+
+                            </DropdownMenu.Content>
+                        </DropdownMenu.Root>
+                    )
+                ) : (
+                    <div className="flex items-center">
+                        <Link
+                            to="/account/login"
+                            className="text-gray-700 hover:text-gray-500  font-semibold py-2 px-2 rounded-full transition-all duration-300"
+                        >
+                            Login
+                        </Link>
+
+                        <span className="text-gray-700">/</span>
+
+                        <Link
+                            to="/account/register"
+                            className="text-gray-700 hover:text-gray-500 font-semibold py-2 px-2 rounded-full transition-all duration-300"
+                        >
+                            Sign up
+                        </Link>
+                    </div>
+                )}
+            </nav>
 
 
         </header>

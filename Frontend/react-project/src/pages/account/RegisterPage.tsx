@@ -5,10 +5,15 @@ import foodImage from "../../assets/food.jpg";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 import ImageUploadFormItem from "../../Components/UI/ImageUploadFormItem.tsx";
+import {useAppDispatch} from "../../store";
+import {loginSuccess} from "../../store/authSlice.ts";
+import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 
 const RegisterPage = () => {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [register, { isLoading, error }] = useRegisterMutation();
+    const [showPassword, setShowPassword] = useState(false);
 
     const [form, setForm] = useState({
         FirstName: "",
@@ -30,13 +35,9 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
-            // 2. Оскільки ваш userService використовує serialize(body),
-            // вам НЕ потрібно створювати FormData вручну. Просто передайте об'єкт.
             const result = await register(form).unwrap();
-
-            localStorage.setItem("token", result.token);
+            dispatch(loginSuccess(result.token));
             navigate("/");
         } catch (err) {
             console.error("Register error:", err);
@@ -143,15 +144,28 @@ const RegisterPage = () => {
                         className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-300/20  transition"
                     />
 
-                    <input
-                        type="password"
-                        name="Password"
-                        placeholder="Password"
-                        value={form.Password}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-300/20  transition"
-                    />
+
+                    <div className="relative">
+                        <input
+                            name="Password"
+                            type={showPassword ? "text" : "password"}
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-300/20 transition"
+                            placeholder="Password"
+                            value={form.Password}
+                            onChange={handleChange}
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            // При натисканні змінюємо true на false і навпаки
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                        >
+                            {/* Змінюємо іконку залежно від стану */}
+                            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                        </button>
+                    </div>
 
                     <div>
                         <ImageUploadFormItem name="ImageFile" onFileSelect={(file) => setForm(prev => ({ ...prev, ImageFile: file }))} />
