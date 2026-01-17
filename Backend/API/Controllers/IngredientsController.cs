@@ -1,5 +1,7 @@
-﻿using Core.Interfaces;
+using Core.Interfaces;
 using Core.Model.Recipe.Ingredient;
+using Core.Model.Search.Requests;
+using Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -13,6 +15,13 @@ namespace API.Controllers
         {
             var model = await ingredientService.ListAsync();
 
+            return Ok(model);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> List([FromQuery] IngredientSearchRequest request)
+        {
+            var model = await ingredientService.ListAsync(request);
             return Ok(model);
         }
         [HttpPost("create")]
