@@ -1,4 +1,5 @@
 import { useGetRecipesQuery } from "../../api/recipeService";
+import {APP_ENV} from "../../env";
 
 export default function RecipesPage() {
   const { data: recipes, isLoading, error } = useGetRecipesQuery();
@@ -15,7 +16,7 @@ export default function RecipesPage() {
           <div key={recipe.id} style={{ border: "1px solid #ddd", padding: 16 }}>
             {recipe.image && (
               <img
-                src={recipe.image}
+                src={`${APP_ENV.API_BASE_URL}/images/400_${recipe.image}`}
                 alt={recipe.name}
                 style={{ width: "100%", height: 150, objectFit: "cover" }}
               />
