@@ -33,10 +33,17 @@ export const recipeService = createApi({
       },
       invalidatesTags: ["Recipe"],
     }),
+    getRecipeById: builder.query<IRecipeItem, number>({
+      query: (id) => ({
+        url: `${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 export const {
   useGetRecipesQuery,
   useCreateRecipeMutation,
+  useGetRecipeByIdQuery,
 } = recipeService;
