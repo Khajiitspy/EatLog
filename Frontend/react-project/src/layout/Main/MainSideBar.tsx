@@ -61,7 +61,7 @@ const MainSideBar: React.FC = () => {
                 </Link>
 
                 <Link
-                    to="/recipe/create"
+                    to="/recipes/create"
                     className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-gray-400 dark:hover:bg-gray-80 transition"
                 >
                     <FontAwesomeIcon icon={faCompass} className="w-4 h-4 text-gray-800" />
