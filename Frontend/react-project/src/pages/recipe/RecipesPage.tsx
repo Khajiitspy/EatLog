@@ -1,42 +1,61 @@
 import { useGetRecipesQuery } from "../../api/recipeService";
-import {APP_ENV} from "../../env";
+import { APP_ENV } from "../../env";
 import { Link } from "react-router";
+import PageContainer from "../../Components/layout/PageContainer";
+import PageHeader from "../../Components/layout/PageHeader";
+import Card from "../../Components/UI/Card";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function RecipesPage() {
   const { data: recipes, isLoading, error } = useGetRecipesQuery();
 
-  if (isLoading) return <p>Loading recipes...</p>;
-  if (error) return <p>Failed to load recipes</p>;
+  if (isLoading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">Failed to load recipes</p>;
 
   return (
-    <div>
-      <h1>Recipes</h1>
+    <PageContainer>
+      <div className="flex justify-between items-center mb-8">
+        <PageHeader
+          title="My Recipes"
+          subtitle="Create, edit and manage your recipes"
+        />
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 16 }}>
-        {recipes?.map(recipe => (
-          <Link
-            key={recipe.id}
-            to={`/recipes/${recipe.id}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <div style={{ border: "1px solid #ddd", padding: 16 }}>
+        <Link
+          to="/recipes/create"
+          className="flex items-center gap-2 bg-gray-800 text-white px-6 py-3 rounded-xl
+                     font-semibold hover:bg-slate-800 transition shadow"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          Create recipe
+        </Link>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {recipes?.map((recipe) => (
+          <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
+            <Card>
               {recipe.image && (
                 <img
                   src={`${APP_ENV.API_BASE_URL}/images/400_${recipe.image}`}
                   alt={recipe.name}
-                  style={{ width: "100%", height: 150, objectFit: "cover" }}
+                  className="rounded-xl w-full h-44 object-cover mb-4"
                 />
               )}
 
-              <h3>{recipe.name}</h3>
+              <h3 className="text-xl font-semibold text-slate-800">
+                {recipe.name}
+              </h3>
 
               {recipe.category && (
-                <small>Category: {recipe.category.name}</small>
+                <p className="text-slate-500 mt-1 text-sm">
+                  {recipe.category.name}
+                </p>
               )}
-            </div>
+            </Card>
           </Link>
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }

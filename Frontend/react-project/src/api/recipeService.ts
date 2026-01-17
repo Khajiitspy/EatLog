@@ -39,11 +39,20 @@ export const recipeService = createApi({
         method: "GET",
       }),
     }),
+    updateRecipe: builder.mutation<IRecipeItem, FormData>({
+      query: (body) => ({
+        url: "edit",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Recipe"],
+    }),
   }),
 });
 
 export const {
   useGetRecipesQuery,
   useCreateRecipeMutation,
+  useUpdateRecipeMutation,
   useGetRecipeByIdQuery,
 } = recipeService;

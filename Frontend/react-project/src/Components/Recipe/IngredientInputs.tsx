@@ -16,14 +16,27 @@ export default function IngredientInputs({
   const { data: units = [] } = useGetUnitsQuery();
 
   // text shown in inputs
-  const [inputValues, setInputValues] = useState<string[]>([""]);
+  const [inputValues, setInputValues] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!ingredients.length || !allIngredients.length) return;
+
+    setInputValues(
+      ingredients.map((ing) => {
+        const found = allIngredients.find(
+          (i) => i.id === ing.ingredientId
+        );
+        return found?.name || "";
+      })
+    );
+  }, [ingredients, allIngredients]);
 
   // keep inputValues in sync when rows are added/removed
-  useEffect(() => {
-    if (inputValues.length < ingredients.length + 1) {
-      setInputValues((prev) => [...prev, ""]);
-    }
-  }, [ingredients.length]);
+  // useEffect(() => {
+  //   if (inputValues.length < ingredients.length + 1) {
+  //     setInputValues((prev) => [...prev, ""]);
+  //   }
+  // }, [ingredients.length]);
 
   const handleIngredientSelect = (index: number, name: string) => {
     const ingredient = allIngredients.find(

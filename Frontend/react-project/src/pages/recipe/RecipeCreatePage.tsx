@@ -4,6 +4,9 @@ import { useGetCategoriesQuery } from "../../api/categoryService";
 import type { IRecipeIngredientCreate } from "../../types/recipe/IRecipeCreate";
 import IngredientInputs from "../../Components/Recipe/IngredientInputs";
 import {slugify} from "../../utils/slugify.ts"
+import PageContainer from "../../Components/layout/PageContainer";
+import Card from "../../Components/UI/Card";
+import PageHeader from "../../Components/layout/PageHeader";
 
 export default function RecipeCreatePage() {
   const [createRecipe, { isLoading }] = useCreateRecipeMutation();
@@ -46,62 +49,78 @@ export default function RecipeCreatePage() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create Recipe</h1>
+    <PageContainer>
+      <div className="max-w-2xl mx-auto">
+        <Card>
+          <PageHeader
+            title="Create Recipe"
+            subtitle="Share your cooking ideas"
+          />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <h1>Create Recipe</h1>
 
-      <input className={errors.Name ? "input-error" : ""} 
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      {errors.Name && <p className="error">{errors.Name[0]}</p>}
+            <input className={`w-full px-4 py-3 rounded-xl border border-slate-200
+                  focus:ring-2 focus:ring-amber-300/20
+                  ${errors.Name ? "input-error" : ""}`}
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            {errors.Name && <p className="error">{errors.Name[0]}</p>}
 
-      <input
-        placeholder="Slug"
-        value={slug}
-        disabled
-      />
+            <input className={"w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-amber-300/20"}
+              placeholder="Slug"
+              value={slug}
+              disabled
+            />
 
-      <textarea className={errors.Instruction ? "input-error" : ""}
-        placeholder="Instruction"
-        value={instruction}
-        onChange={(e) => setInstruction(e.target.value)}
-        required
-      />
-      {errors.Instruction && <p className="error">{errors.Instruction[0]}</p>}
-
-
-      <select className={errors.categoryId ? "input-error" : ""}
-        value={categoryId || ""}
-        onChange={(e) => setCategoryId(Number(e.target.value))}
-        required
-      >
-        <option value="">Select category</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.name}
-          </option>
-        ))}
-      </select>
-      {errors.categoryId && <p className="error">{errors.categoryId[0]}</p>}
-
-      <IngredientInputs ingredients={ingredients} setIngredients={setIngredients} />
-      {errors.IngredientsJson && (
-        <p className="error">{errors.IngredientsJson[0]}</p>
-      )}
+            <textarea className={`w-full px-4 py-3 rounded-xl border border-slate-200
+                focus:ring-2 focus:ring-amber-300/20
+                ${errors.Instruction ? "input-error" : ""}`}
+              placeholder="Instruction"
+              value={instruction}
+              onChange={(e) => setInstruction(e.target.value)}
+              required
+            />
+            {errors.Instruction && <p className="error">{errors.Instruction[0]}</p>}
 
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files?.[0] || null)}
-      />
-      {errors.Image && <p className="error">{errors.Image[0]}</p>}
+            <select className={`w-full px-4 py-3 rounded-xl border border-slate-200
+                focus:ring-2 focus:ring-amber-300/20
+                ${errors.CategoryId ? "input-error" : ""}`}
+              value={categoryId || ""}
+              onChange={(e) => setCategoryId(Number(e.target.value))}
+              required
+            >
+              <option value="">Select category</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            {errors.categoryId && <p className="error">{errors.categoryId[0]}</p>}
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? "Creating..." : "Create"}
-      </button>
-    </form>
+            <IngredientInputs ingredients={ingredients} setIngredients={setIngredients} />
+            {errors.IngredientsJson && (
+              <p className="error">{errors.IngredientsJson[0]}</p>
+            )}
+
+
+            <input className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-amber-300/20"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files?.[0] || null)}
+            />
+            {errors.Image && <p className="error">{errors.Image[0]}</p>}
+
+            <button type="submit" disabled={isLoading} className="w-full bg-gray-800 text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition">
+              {isLoading ? "Creating..." : "Create"}
+            </button>
+          </form>
+        </Card>
+      </div>
+    </PageContainer>
   );
 }

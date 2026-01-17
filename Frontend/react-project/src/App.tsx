@@ -8,6 +8,7 @@ import LoginPage from "./pages/account/LoginPage.tsx";
 import RecipeCreatePage from './pages/recipe/RecipeCreatePage.tsx';
 import RecipesPage from './pages/recipe/RecipesPage.tsx';
 import RecipeDetailsPage from './pages/recipe/RecipeDetailsPage.tsx';
+import RecipeEditPage from './pages/recipe/RecipeEditPage.tsx';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/recipes" element={<RecipesPage />} />
                     <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
                     <Route path="/recipes/create" element={<RecipeCreatePage />} />
+                    <Route path="/recipes/edit/:id" element={<RecipeEditPage />} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage/>} />
