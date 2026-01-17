@@ -27,7 +27,7 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateModel>
             .NotEmpty()
             .WithMessage("Слаг обов'язковий")
             .Must(slug => !string.IsNullOrEmpty(slug))
-            .WithMessage("Назва не може бути empty або null")
+            .WithMessage("Слаг не може бути empty або null")
             .DependentRules(() =>
             {
                 RuleFor(x => x.Slug)
@@ -35,8 +35,8 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateModel>
                     !await db.Categories.AnyAsync(c => c.Slug.ToLower() == slug.ToLower().Trim(), cancellation))
                 .WithMessage("Категорія з таким слагом вже існує");
             })
-            .MaximumLength(250)
-            .WithMessage("Слаг має бути не довшим, ніж 250 символів");
+            .MaximumLength(300)
+            .WithMessage("Слаг має бути не довшим, ніж 300 символів");
 
 
         RuleFor(x => x.ImageFile)
