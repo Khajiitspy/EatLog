@@ -2,14 +2,19 @@ import {Link, useNavigate} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../store";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {logout} from "../../store/authSlice.ts";
-import {faChevronDown, faLock, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faChevronDown, faLock, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {APP_ENV} from "../../env";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
+interface HeaderProps {
+    toggleMobileMenu: () => void;
+}
 
-export const MainHeader = () => {
+
+export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
     const { user } = useAppSelector(state=>state.auth);
+
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -33,16 +38,30 @@ export const MainHeader = () => {
     };
 
 
+
     return (
-        <header className="w-full py-2 px-6 bg-amber-300  shadow-md flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
-            <div className="hidden items-center gap-1 lg:flex">
-                <Link to="/" className="text-2xl font-semibold  text-gray-800 ">
+        <header className="relative w-full py-2 px-6 bg-amber-300  shadow-md flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
+
+            <div className="z-10">
+                <button
+                    onClick={toggleMobileMenu}
+                    className="text-gray-800 text-2xl md:hidden focus:outline-none"
+                >
+                    <FontAwesomeIcon icon={faBars} />
+                </button>
+            </div>
+
+            <div className="absolute left-1/2 -translate-x-1/2 flex lg:hidden items-center pointer-events-none">
+                <Link
+                    to="/"
+                    className="text-2xl font-semibold text-gray-800 pointer-events-auto"
+                >
                     EatLog
                 </Link>
             </div>
 
 
-            <nav className="flex items-center gap-4">
+            <nav className="flex items-center gap-4 ml-auto">
                 {user ? (
                     user.roles.includes("Admin") ? (
                         <DropdownMenu.Root>
@@ -175,16 +194,17 @@ export const MainHeader = () => {
                     )
                 ) : (
                     <div className="flex items-center gap-4">
-                        <button onClick={handleLoginRedirect} className="bg-gray-800 text-white px-6 py-3 rounded-xl font-bold
-                        hover:ring-2 hover:ring-amber-300 hover:ring-offset-2 transition-all">
-                            Login
-                        </button>
+
+                        <div className="hidden md:flex items-center gap-4">
+                            <button onClick={handleLoginRedirect} className="bg-gray-800 text-white px-6 py-3 rounded-xl font-bold hover:ring-2 hover:ring-amber-300 transition-all">
+                                Login
+                            </button>
+                            <button onClick={handleSignUpRedirect} className="bg-gray-800 text-white px-6 py-3 rounded-xl font-bold hover:ring-2 hover:ring-amber-300 transition-all">
+                                Sign up
+                            </button>
+                        </div>
 
 
-                        <button onClick={handleSignUpRedirect} className="bg-gray-800 text-white px-6 py-3 rounded-xl font-bold
-                        hover:ring-2 hover:ring-amber-300 hover:ring-offset-2 transition-all">
-                            Sign up
-                        </button>
                     </div>
                 )}
             </nav>

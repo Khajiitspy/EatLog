@@ -7,8 +7,6 @@ import {useAppSelector} from "../../../store";
 import {useNavigate} from "react-router";
 
 
-
-
 const testimonials = [
     {
         id: 1,
