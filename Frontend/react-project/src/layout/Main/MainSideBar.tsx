@@ -4,10 +4,9 @@ import {
     faHouse,
     faFire,
     faComments,
-    faCompass,
     faAngleLeft,
     faAngleRight,
-    faPlus,
+    faPlus, faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 
@@ -45,7 +44,7 @@ const MainSideBar: React.FC = () => {
                     className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-gray-400 transition"
                 >
                     <FontAwesomeIcon icon={faFire} className="w-4 h-4 text-gray-800 " />
-                    {!collapsed && <span className="text-sm font-medium">Popular</span>}
+                    {!collapsed && <span className="text-sm font-medium">Popular Resipes</span>}
                 </Link>
 
                 <Link
@@ -64,21 +63,22 @@ const MainSideBar: React.FC = () => {
                     to="/recipes/create"
                     className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-gray-400 dark:hover:bg-gray-80 transition"
                 >
-                    <FontAwesomeIcon icon={faCompass} className="w-4 h-4 text-gray-800" />
+                    <FontAwesomeIcon icon={faPlus} className="w-4 h-4 text-gray-800" />
                     {!collapsed && <span className="text-sm font-medium">Add Recipe</span>}
                 </Link>
 
-
-                <Link
-                    to="/post/add"
-                    className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-gray-400  transition"
-                >
-                    <FontAwesomeIcon icon={faPlus} className="w-4 h-4 text-gray-800 "/>
-                    {!collapsed && <span className="text-sm font-medium">Add Post</span>}
-                </Link>
             </nav>
 
             <div className="border-t border-gray-200 dark:border-gray-800 mb-4"></div>
+
+            <div className="mt-auto pt-4 border-t border-gray-400/30 space-y-2">
+                {/* Кнопка налаштувань */}
+                <Link to="/settings" className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-gray-400/20 transition">
+                    <FontAwesomeIcon icon={faGear} className="w-4 h-4 text-gray-800" />
+                    {!collapsed && <span className="text-sm font-medium text-gray-800">Settings</span>}
+                </Link>
+            </div>
+
         </aside>
     );
 };

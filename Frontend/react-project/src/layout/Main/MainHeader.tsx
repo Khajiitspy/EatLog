@@ -21,7 +21,7 @@ export const MainHeader = () => {
     }
 
     function openProfile(){
-        navigate("/profile");
+        navigate("/account/profile");
     }
 
     const handleLoginRedirect = () => {
@@ -67,7 +67,7 @@ export const MainHeader = () => {
                                 <DropdownMenu.Item
                                     onClick={openProfile}
                                     className="flex items-center text-black
-                                    hover:bg-gray-200  py-2 rounded
+                                    hover:bg-gray-200 px-2  py-2 rounded
                                     cursor-pointer text-sm transition-colors">
                                     <FontAwesomeIcon
                                         icon={faUser}
@@ -80,7 +80,7 @@ export const MainHeader = () => {
                                     <Link
                                         to="/Admin/home"
                                         className="flex items-center text-black
-                                    hover:bg-gray-200  py-2 rounded
+                                    hover:bg-gray-200 px-2  py-2 rounded
                                     cursor-pointer text-sm transition-colors border-b">
                                         <FontAwesomeIcon
                                             icon={faLock}
@@ -93,7 +93,7 @@ export const MainHeader = () => {
                                 <DropdownMenu.Item
                                     onClick={logoutUser}
                                     className="flex items-center  text-black
-                                    hover:bg-gray-200  py-2 rounded
+                                    hover:bg-gray-200 px-2  py-2 rounded
                                     cursor-pointer text-sm transition-colors">
                                     <FontAwesomeIcon
                                         icon={faRightFromBracket}
@@ -125,7 +125,7 @@ export const MainHeader = () => {
                                         {user?.name}
                                     </span>
                                         <span
-                                            className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">
+                                            className="text-[11px] text-gray-600 font-medium uppercase tracking-wider">
                                         Мій профіль
                                        </span>
                                     </div>
@@ -149,7 +149,7 @@ export const MainHeader = () => {
                                 <DropdownMenu.Item
                                     onClick={openProfile}
                                     className="flex items-center text-black
-                                    hover:bg-gray-200  py-2 rounded
+                                    hover:bg-gray-200 px-2  py-2 rounded
                                     cursor-pointer text-sm transition-colors border-b">
                                     <FontAwesomeIcon
                                         icon={faUser}
@@ -161,7 +161,7 @@ export const MainHeader = () => {
                                 <DropdownMenu.Item
                                     onClick={logoutUser}
                                     className="flex items-center  text-black
-                                    hover:bg-gray-200  py-2 rounded
+                                    hover:bg-gray-200 px-2  py-2 rounded
                                     cursor-pointer text-sm transition-colors">
                                     <FontAwesomeIcon
                                         icon={faRightFromBracket}

@@ -81,7 +81,7 @@ const UserHomePage: React.FC = () => {
             </section>
 
             {!user && (
-                <section className="relative h-[500px] m-4">
+                <section className="relative  m-4">
                     <div className="w-full mx-auto bg-amber-300 rounded-[2rem] p-8 md:p-16 flex flex-col md:flex-row items-center justify-between overflow-hidden relative">
                         {/* Декоративні елементи (можна додати іконки їжі на фоні) */}
                         <div className="relative z-10 text-center md:text-left md:max-w-xl">
@@ -108,7 +108,7 @@ const UserHomePage: React.FC = () => {
             )}
 
 
-            <section className="py-10 px-6 -mt-10  bg-gray-50">
+            <section className="py-10 px-6   bg-gray-50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-10">
                         <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
