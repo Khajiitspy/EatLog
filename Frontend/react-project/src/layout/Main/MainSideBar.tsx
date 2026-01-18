@@ -51,7 +51,7 @@ const MainSideBar = ({ isMobileOpen,closeMobileMenu }: SideBarProps) => {
                     <Link
                         to="/"
                         onClick={closeMobileMenu}
-                        className="text-2xl font-semibold text-gray-800   hover:bg-gray-400/20 rounded-md transition"
+                        className="text-2xl font-semibold text-gray-800 ml-1   hover:bg-gray-400/20 rounded-md transition"
                     >
                         EatLog
                     </Link>
@@ -72,7 +72,7 @@ const MainSideBar = ({ isMobileOpen,closeMobileMenu }: SideBarProps) => {
             {!user && (
                 <div className="md:hidden flex flex-col mb-4 gap-3 px-2 pt-4 ">
 
-                    <p className="text-Xl font-bold text-gray-800 uppercase ">Авторизація</p>
+                    <p className="text-Xl ml-1 font-bold text-gray-800 uppercase ">Авторизація</p>
                     <button
                         onClick={handleLoginRedirect}
                         className="flex items-center gap-3 py-3 px-4 rounded-xl bg-gray-800 text-white font-bold shadow-md active:scale-95 transition-all"
