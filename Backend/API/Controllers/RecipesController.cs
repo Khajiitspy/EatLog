@@ -1,6 +1,7 @@
-﻿using Core.Interfaces;
+using Core.Interfaces;
 using Core.Model.Recipe;
 using Core.Model.Recipe.Category;
+using Core.Model.Search.Requests;
 using Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,29 @@ namespace API.Controllers
             var recipe = await recipeService.CreateAsync(model);
             return Ok(recipe);
         }
+        [HttpGet("search")]
+        public async Task<IActionResult> List([FromQuery] RecipeSearchRequest request)
+        {
+            var recipes = await recipeService.ListAsync(request);
+            return Ok(recipes);
+        }
+
+        [HttpGet("myRecipes")]
+        [Authorize]
+        public async Task<IActionResult> MyRecipes()
+        {
+            var recipes = await recipeService.ListByUserAsync();
+            return Ok(recipes);
+        }
+
+        [HttpPut("publish/{id:long}")]
+        [Authorize]
+        public async Task<IActionResult> Publish(long id)
+        {
+            await recipeService.PublishRecipe(id);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> List()
         {

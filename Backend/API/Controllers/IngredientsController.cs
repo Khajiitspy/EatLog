@@ -1,5 +1,8 @@
-﻿using Core.Interfaces;
+using Core.Interfaces;
 using Core.Model.Recipe.Ingredient;
+using Core.Model.Search.Requests;
+using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,13 +18,31 @@ namespace API.Controllers
 
             return Ok(model);
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> List([FromQuery] IngredientSearchRequest request)
+        {
+            var model = await ingredientService.ListAsync(request);
+            return Ok(model);
+        }
+
         [HttpPost("create")]
+        [Authorize]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] IngredientCreateModel model)
         {
             var category = await ingredientService.CreateAsync(model);
             return Ok(category);
         }
+
+        [HttpPut("approve{id:long}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Approve(long id)
+        {
+            await ingredientService.ApproveIngredient(id);
+            return Ok();
+        }
+
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetItemById(long id)
         {

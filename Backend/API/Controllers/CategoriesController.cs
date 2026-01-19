@@ -1,5 +1,6 @@
-﻿using Core.Interfaces;
+using Core.Interfaces;
 using Core.Model.Recipe.Category;
+using Core.Model.Search.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,13 @@ namespace API.Controllers
         {
             var model = await categoryService.ListAsync();
 
+            return Ok(model);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> List([FromQuery] CategorySearchRequest request)
+        {
+            var model = await categoryService.ListAsync(request);
             return Ok(model);
         }
         [HttpPost("create")]
