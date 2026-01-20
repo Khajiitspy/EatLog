@@ -10,6 +10,8 @@ import RecipesPage from './pages/recipe/RecipesPage.tsx';
 import ForgotPasswordPage from "./pages/account/ForgotPassword/ForgotPasswordPage.tsx";
 import EmailSentSuccessPage from "./pages/account/EmailSentSuccess/EmailSentSuccessPage.tsx";
 import ResetPasswordPage from "./pages/account/ResetPassword/ResetPasswordPage.tsx";
+import RecipeDetailsPage from "./pages/recipe/RecipeDetailsPage.tsx";
+import RecipeEditPage from "./pages/recipe/RecipeEditPage.tsx";
 
 function App() {
     return (
@@ -28,7 +30,9 @@ function App() {
                     </Route>
 
                     <Route path="/recipes" element={<RecipesPage />} />
+                    <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
                     <Route path="/recipes/create" element={<RecipeCreatePage />} />
+                    <Route path="/recipes/edit/:id" element={<RecipeEditPage />} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage/>} />

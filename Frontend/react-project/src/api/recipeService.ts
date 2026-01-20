@@ -12,7 +12,7 @@ export const recipeService = createApi({
   endpoints: (builder) => ({
     getRecipes: builder.query<IRecipeItem[], void>({
       query: () => ({
-        url: "",
+        url: "myRecipes",
         method: "GET",
       }),
       providesTags: ["Recipe"],
@@ -33,10 +33,49 @@ export const recipeService = createApi({
       },
       invalidatesTags: ["Recipe"],
     }),
+    getRecipeById: builder.query<IRecipeItem, number>({
+      query: (id) => ({
+        url: `${id}`,
+        method: "GET",
+      }),
+    }),
+    updateRecipe: builder.mutation<IRecipeItem, FormData>({
+      query: (body) => ({
+        url: "edit",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Recipe"],
+    }),
+    deleteRecipe: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Recipe"],
+    }),
+    searchRecipesPaged: builder.query<
+      { items: IRecipeItem[]; totalItems: number },
+      { page: number; pageSize: number; search?: string }
+    >({
+      query: ({ page, pageSize, search }) => ({
+        url: "search",
+        params: {
+          pageNumber: page,
+          pageSize,
+          search,
+        },
+      }),
+      providesTags: ["Recipe"],
+    }),
   }),
 });
 
 export const {
   useGetRecipesQuery,
   useCreateRecipeMutation,
+  useUpdateRecipeMutation,
+  useGetRecipeByIdQuery,
+  useDeleteRecipeMutation,
+  useGetSearchRecipesQuery,
 } = recipeService;

@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { createBaseQuery } from "../utils/createBaseQuery";
+// @ts-ignore
 import type { IngredientItemModel } from "../types/recipe/IIngredientItem";
 
 export const ingredientService = createApi({

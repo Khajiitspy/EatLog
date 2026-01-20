@@ -12,6 +12,7 @@ import type { IValidateTokenRequest } from "../types/user/IValidateToken.ts";
 import type { IResetPasswordRequest } from "../types/user/IReserPassword.ts";
 
 
+
 const handleAuthSuccess = async (
     queryFulfilled: Promise<{ data: IAuthResponse }>,
     dispatch: Dispatch,
@@ -30,6 +31,7 @@ const handleAuthSuccess = async (
 export const userService = createApi({
   reducerPath: "userService",
   baseQuery: createBaseQuery("account"),
+  tagTypes: ['Account'],
   endpoints: (builder) => ({
 
 

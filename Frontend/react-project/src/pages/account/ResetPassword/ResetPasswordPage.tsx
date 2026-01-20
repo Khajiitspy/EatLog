@@ -3,6 +3,7 @@ import {Form, type FormProps, Input} from "antd";
 import {useLocation, useNavigate} from "react-router";
 import LoadingOverlay from "../../../Components/UI/loading/LoadingOverlay.tsx";
 import {useResetPasswordMutation} from "../../../api/userService.ts";
+import type {IResetPasswordRequest} from "../../../types/user/IReserPassword.ts";
 
 
 
