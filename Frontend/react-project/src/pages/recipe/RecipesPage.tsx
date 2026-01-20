@@ -31,19 +31,46 @@ export default function RecipesPage() {
         </Link>
       </div>
 
+      {recipes?.length === 0 && (
+        <Card className="text-center py-12">
+          <p className="text-slate-500 mb-4">
+            You haven’t created any recipes yet
+          </p>
+          <Link
+            to="/recipes/create"
+            className="inline-flex items-center gap-2 bg-gray-800 text-white px-6 py-3 rounded-xl"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            Create your first recipe
+          </Link>
+        </Card>
+      )}
+
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recipes?.map((recipe) => (
           <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
-            <Card>
+            <Card
+              className="
+                group cursor-pointer overflow-hidden
+                transition-all duration-300
+                hover:-translate-y-1 hover:shadow-xl
+              "
+            >
               {recipe.image && (
-                <img
-                  src={`${APP_ENV.API_BASE_URL}/images/400_${recipe.image}`}
-                  alt={recipe.name}
-                  className="rounded-xl w-full h-44 object-cover mb-4"
-                />
+                <div className="overflow-hidden rounded-xl mb-4">
+                  <img
+                    src={`${APP_ENV.API_BASE_URL}/images/400_${recipe.image}`}
+                    alt={recipe.name}
+                    className="
+                      w-full h-44 object-cover
+                      transition-transform duration-500
+                      group-hover:scale-105
+                    "
+                  />
+                </div>
               )}
 
-              <h3 className="text-xl font-semibold text-slate-800">
+              <h3 className="text-xl font-semibold text-slate-800 group-hover:text-slate-900">
                 {recipe.name}
               </h3>
 

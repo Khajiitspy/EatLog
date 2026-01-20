@@ -36,21 +36,52 @@ export default function RecipeDetailsPage() {
           <img
             src={`${APP_ENV.API_BASE_URL}/images/800_${recipe.image}`}
             alt={recipe.name}
-            className="rounded-xl w-full mb-6"
+            className="
+              rounded-xl w-full mb-6
+              transition-transform duration-300
+              hover:scale-[1.01]
+              shadow-md
+            "
           />
         )}
 
-        <h2 className="text-xl font-bold text-slate-800 mb-2">Ingredients</h2>
-        <ul className="space-y-1 mb-6">
+        <h2 className="text-xl font-bold text-slate-800 mb-4">Ingredients</h2>
+
+        <ul className="space-y-3 mb-8">
           {recipe.ingredients?.map((i) => (
-            <li key={i.id} className="text-slate-700">
-              • {i.amount} {i.unit?.name} {i.ingredient?.name}
+            <li
+              key={i.id}
+              className="flex items-center gap-4 p-3 rounded-xl bg-slate-50"
+            >
+              {i.ingredient?.image && (
+                <img
+                  src={`${APP_ENV.API_BASE_URL}/images/100_${i.ingredient.image}`}
+                  alt={i.ingredient.name}
+                  className="w-10 h-10 rounded object-cover"
+                />
+              )}
+
+              <span className="text-slate-700">
+                <strong>{i.amount}</strong>{" "}
+                {i.unit?.name}{" "}
+                {i.ingredient?.name}
+              </span>
             </li>
           ))}
         </ul>
 
-        <h2 className="text-xl font-bold text-slate-800 mb-2">Instructions</h2>
-        <p className="text-slate-700 whitespace-pre-line">
+        <h2 className="text-xl font-bold text-slate-800 mb-3">Instructions</h2>
+
+        <p
+          className="
+            text-slate-700
+            whitespace-pre-line
+            leading-relaxed
+            bg-slate-50
+            p-4
+            rounded-xl
+          "
+        >
           {recipe.instruction}
         </p>
         <Link
@@ -61,7 +92,7 @@ export default function RecipeDetailsPage() {
         >
           ✏️ Edit recipe
         </Link>
-              <button
+        <button
           onClick={() => handleDelete(recipe.id)}
           disabled={isDeleting}
           title="Delete recipe"
