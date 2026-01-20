@@ -26,16 +26,16 @@ public class CartService(IMapper mapper, IAuthService authService,
             await context.SaveChangesAsync();
         }
         else
-            entity.Recipes!.Clear();
+            entity.Recipes?.Clear();
 
         foreach (var recipe in model.Recipes!)
+        {
+            entity.Recipes.Add(new CartRecipeEntity
             {
-                entity.Recipes.Add(new CartRecipeEntity
-                {
-                    RecipeId = recipe.RecipeId,
-                    Portion = recipe.Portion
-                });
-            }
+                RecipeId = recipe.RecipeId,
+                Portion = recipe.Portion
+            });
+        }
         await context.SaveChangesAsync();
         return await GetCartAsync();
     }
@@ -60,6 +60,7 @@ public class CartService(IMapper mapper, IAuthService authService,
                     ri.IngredientId,
                     ri.Ingredient!.Name,
                     UnitName = ri.Unit!.Name,
+                    UnitSlug = ri.Unit!.Slug,
                     UnitId = ri.Unit!.Id,
                     Amount = ri.Amount * cr.Portion
                 }))
@@ -70,18 +71,89 @@ public class CartService(IMapper mapper, IAuthService authService,
                     IngredientName = g.Key.Name,
 
                     Units = g
-                    .GroupBy(x=>new {x.UnitId, x.UnitName})
-                    .Select(i=>new CartIngredientUnitModel
+                    .GroupBy(x => new { x.UnitId, x.UnitName, x.UnitSlug })
+                    .Select(i => new CartIngredientUnitModel
                     {
                         UnitId = i.Key.UnitId,
                         UnitName = i.Key.UnitName,
-                        Amount = i.Sum(a=>a.Amount)
+                        UnitSlug = i.Key.UnitSlug,
+                        Amount = i.Sum(a => a.Amount),
                     }).ToList()
                 })
                 .ToList()
 
 
             }).FirstOrDefaultAsync();
+        if(cart?.Ingredients != null)
+        {
+            await CombineUnits(cart.Ingredients);
+        }
         return cart ?? new CartItemModel();
+    }
+
+    private async Task CombineUnits(List<CartIngredientGroupModel> ingredients)
+    {
+        var kgUnit = await context.IngredientUnits
+        .Where(x => x.Slug == "kg")
+        .Select(x => new { x.Id, x.Name, x.Slug })
+        .FirstAsync();
+
+        var lUnit = await context.IngredientUnits
+            .Where(x => x.Slug == "l")
+            .Select(x => new { x.Id, x.Name, x.Slug })
+            .FirstAsync();
+
+        foreach (var ing in ingredients)
+        {
+            var result = new List<CartIngredientUnitModel>();
+
+            var weightSum = ing.Units!
+                .Where(u => u.UnitSlug is "mg" or "g" or "kg")
+                .Sum(u => u.UnitSlug switch
+                {
+                    "mg" => u.Amount / 1_000_000m,
+                    "g" => u.Amount / 1_000m,
+                    "kg" => u.Amount,
+                    _ => 0
+                });
+
+            if (weightSum > 0)
+            {
+                result.Add(new CartIngredientUnitModel
+                {
+                    UnitId = kgUnit.Id,
+                    UnitName = kgUnit.Name,
+                    UnitSlug = kgUnit.Slug,
+                    Amount = Math.Round(weightSum, 2)
+                });
+            }
+
+            var volumeSum = ing.Units
+                .Where(u => u.UnitSlug is "ml" or "l")
+                .Sum(u => u.UnitSlug switch
+                {
+                    "ml" => u.Amount / 1_000m,
+                    "l" => u.Amount,
+                    _ => 0
+                });
+
+            if (volumeSum > 0)
+            {
+                result.Add(new CartIngredientUnitModel
+                {
+                    UnitId = lUnit.Id,
+                    UnitName = lUnit.Name,
+                    UnitSlug = lUnit.Slug,
+                    Amount = Math.Round(volumeSum, 2)
+                });
+            }
+
+            result.AddRange(
+                ing.Units
+                    .Where(u => u.UnitSlug is not ("mg" or "g" or "kg" or "ml" or "l"))
+            );
+
+            ing.Units = result;
+        }
     }
 }
