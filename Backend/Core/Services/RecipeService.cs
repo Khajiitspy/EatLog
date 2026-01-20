@@ -72,14 +72,12 @@ public class RecipeService(
 
     public async Task<List<RecipeItemModel>> ListAsync()
     {
-        var userId = await authService.GetUserId();
-
-        var key = $"{CacheKeys.RecipeItemCacheKeyPrefix}{userId}";
+        var key = $"{CacheKeys.RecipeItemCacheKeyPrefix}";
 
         return await cache.GetOrCreateAsync(
             key,
             async () => await context.Recipes
-                .Where(x => !x.IsDeleted && x.UserId == userId && x.IsPublished)
+                .Where(x => !x.IsDeleted && x.IsPublished)
                 .ProjectTo<RecipeItemModel>(mapper.ConfigurationProvider)
                 .ToListAsync(),
             TimeSpan.FromMinutes(CacheKeys.ListCacheTtlMinutes)
@@ -88,13 +86,17 @@ public class RecipeService(
     public async Task<PagedResult<RecipeItemModel>> ListAsync(RecipeSearchRequest request)
     {
         var isAdmin = await authService.IsAdminAsync();
+        var userId = await authService.GetUserId();
 
-        if (!isAdmin)
+        if (!isAdmin && userId != request.UserId)
         {
             request.IsDeleted = false;
 
             request.IsPublished = true;
         }
+
+        if (userId == request.UserId)
+            request.IsDeleted = false;
 
         var query = context.Recipes.AsQueryable();
 
@@ -230,16 +232,13 @@ public class RecipeService(
             .ToListAsync();
     }
 
-    public async Task PublishRecipe(long id)
+    public async Task TogglePublishRecipe(long id)
     {
         long userId = await authService.GetUserId();
-
         var recipe = await context.Recipes.FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId);
         if (recipe == null)
             return;
-
-        recipe.IsPublished = true;
-
+        recipe.IsPublished = !recipe.IsPublished;
         await context.SaveChangesAsync();
     }
 }
