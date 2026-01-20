@@ -30,7 +30,7 @@ namespace API.Helpers.Extensions
             #endregion
 
             #region OpenAPI + Swagger
-            app.MapOpenApi();
+            //app.MapOpenApi();
 
             app.UseSwaggerUI(options =>
             {
@@ -42,7 +42,9 @@ namespace API.Helpers.Extensions
             #region Middleware
             app.UseRateLimiter();
 
-            app.UseHttpsRedirection();
+            app.MapOpenApi().DisableRateLimiting();
+
+            //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
 
