@@ -68,6 +68,13 @@ export const recipeService = createApi({
       }),
       providesTags: ["Recipe"],
     }),
+    togglePublish: builder.mutation<void, { id: number; publish: boolean }>({
+      query: ({ id, publish }) => ({
+        url: publish ? `publish/${id}` : `unpublish/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Recipe"],
+    }),
   }),
 });
 
@@ -77,5 +84,6 @@ export const {
   useUpdateRecipeMutation,
   useGetRecipeByIdQuery,
   useDeleteRecipeMutation,
+  useTogglePublishMutation,
   useGetSearchRecipesQuery,
 } = recipeService;
