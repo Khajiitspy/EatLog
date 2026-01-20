@@ -1,0 +1,44 @@
+version: "3.9"
+networks:
+  myAppNetwork:
+    driver: bridge
+
+services:
+  db:
+    container_name: pg-container
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: eatlogDb
+    volumes:
+      - /data/taras/postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - myAppNetwork
+    restart: unless-stopped
+  app:
+    container_name: eatlog-api_container
+    image: 0taras0/eatlog-api
+    ports:
+      - "5166:8080"  
+    networks:
+      - myAppNetwork
+    volumes:
+      - /data/taras/images:/app/images
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    environment:
+        ConnectionStrings__DefaultConnection: "Host=db;Database=eatlogDb;Username=postgres;Password=postgres"
+
+  client:
+    container_name: eatlog-client_container
+    image: 0taras0/eatlog-client
+    restart: on-failure
+    ports:
+      - "5173:80"  
+    networks:
+      - myAppNetwork

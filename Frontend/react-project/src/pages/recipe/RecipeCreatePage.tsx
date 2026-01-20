@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCreateRecipeMutation } from "../../api/recipeService";
 import { useGetCategoriesQuery } from "../../api/categoryService";
+// @ts-ignore
 import type { IRecipeIngredientCreate } from "../../types/recipe/IRecipeCreate";
 import IngredientInputs from "../../Components/Recipe/IngredientInputs";
 

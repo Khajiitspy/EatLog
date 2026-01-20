@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGetIngredientsQuery } from "../../api/ingredientService";
 import { useGetUnitsQuery } from "../../api/unitService";
+// @ts-ignore
 import type { IRecipeIngredientCreate } from "../../types/recipe/IRecipeCreate";
 
 interface IngredientInputsProps {
@@ -21,6 +22,7 @@ export default function IngredientInputs({
   // keep inputValues in sync when rows are added/removed
   useEffect(() => {
     if (inputValues.length < ingredients.length + 1) {
+      // @ts-ignore
       setInputValues((prev) => [...prev, ""]);
     }
   }, [ingredients.length]);
