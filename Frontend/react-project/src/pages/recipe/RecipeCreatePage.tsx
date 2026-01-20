@@ -53,8 +53,8 @@ export default function RecipeCreatePage() {
 
   return (
       <PageContainer>
-        <div className="max-w-5xl mx-auto py-6">
-          <Card className="shadow-sm border-slate-100">
+        <div className="max-w-5xl  mx-auto py-6">
+          <Card className="shadow-sm  border-slate-100">
             <PageHeader
                 title="Створення рецепту"
                 subtitle="Поділіться своїм кулінарним шедевром"
