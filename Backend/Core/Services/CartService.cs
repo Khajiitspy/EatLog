@@ -11,11 +11,13 @@ namespace Core.Services;
 public class CartService(IMapper mapper, IAuthService authService,
     AppDbContext context) : ICartService
 {
-    public async Task<CartRecipeModel> AddOneRecipeAsync(CartCreateSingleItemModel model)
+    public async Task<CartRecipeModel?> AddOneRecipeAsync(CartCreateSingleItemModel model)
     {
         var userId = await authService.GetUserId();
 
-        var cart = await context.Carts.Include(c => c.Recipes).FirstOrDefaultAsync(c => c.UserId == userId);
+        var cart = await context.Carts
+            .Include(c => c.Recipes)
+            .FirstOrDefaultAsync(c => c.UserId == userId);
 
         if (cart == null)
         {
@@ -33,19 +35,35 @@ public class CartService(IMapper mapper, IAuthService authService,
         if (existingRecipe != null)
         {
             existingRecipe.Portion += model.Portion;
+
+            if (existingRecipe.Portion <= 0)
+            {
+                cart.Recipes.Remove(existingRecipe);
+            }
         }
         else
         {
-            cart.Recipes.Add(new CartRecipeEntity
+            if (model.Portion > 0)
             {
-                CartId = cart.Id,
-                RecipeId = model.RecipeId,
-                Portion = model.Portion
-            });
+                cart.Recipes.Add(new CartRecipeEntity
+                {
+                    CartId = cart.Id,
+                    RecipeId = model.RecipeId,
+                    Portion = model.Portion
+                });
+            }
         }
 
         await context.SaveChangesAsync();
-        var entity = await context.CartRecipes.Where(x => x.Cart.UserId == userId && x.RecipeId == model.RecipeId).Include(x=>x.Recipe).FirstOrDefaultAsync();
+
+        var entity = await context.CartRecipes
+            .Where(x => x.Cart!.UserId == userId && x.RecipeId == model.RecipeId)
+            .Include(x => x.Recipe)
+            .FirstOrDefaultAsync();
+
+        if (entity == null)
+            return null;
+
         return mapper.Map<CartRecipeModel>(entity);
     }
 
