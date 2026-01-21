@@ -6,8 +6,12 @@ import {Provider} from "react-redux";
 import {store} from "./store";
 import {BrowserRouter} from "react-router";
 import {GoogleOAuthProvider} from "@react-oauth/google";
+import {HelmetProvider} from "react-helmet-async";
+import {ThemeProvider} from "./context/ThemeContext.tsx";
 
 createRoot(document.getElementById('root')!).render(
+    <HelmetProvider>
+        <ThemeProvider>
     <StrictMode>
         <Provider store={store}>
             <BrowserRouter>
@@ -16,5 +20,7 @@ createRoot(document.getElementById('root')!).render(
             </GoogleOAuthProvider>
             </BrowserRouter>
         </Provider>
-    </StrictMode>,
+    </StrictMode>
+        </ThemeProvider>
+    </HelmetProvider>
 )
