@@ -60,6 +60,7 @@ public class CartService(IMapper mapper, IAuthService authService,
                 {
                     RecipeId = cr.RecipeId,
                     RecipeName = cr.Recipe!.Name,
+                    RecipeImage = cr.Recipe!.Image,
                     Portion = cr.Portion
                 }).ToList(),
 
