@@ -11,18 +11,18 @@ const LayoutContent: React.FC = () => {
     console.log("App rendered");
 
     return (
-        <div className="min-h-screen xl:flex">
-            <div>
+        <div className="min-h-screen xl:flex bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+            <div className={"dark:bg-gray-900"}>
                 <AppSidebar />
                 <Backdrop />
             </div>
             <div
-                className={`flex-1 transition-all duration-300 ease-in-out ${
+                className={`flex-1 transition-all duration-300 dark:bg-gray-900 ease-in-out ${
                     isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
                 } ${isMobileOpen ? "ml-0" : ""}`}
             >
                 <AppHeader />
-                <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+                <div className="p-4 dark:bg-gray-900 mx-auto max-w-(--breakpoint-2xl) md:p-6">
                     <Outlet />
                 </div>
             </div>

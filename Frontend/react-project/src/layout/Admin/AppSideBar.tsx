@@ -189,7 +189,7 @@ const AppSidebar: React.FC = () => {
                                     <li key={subItem.name}>
                                         <Link
                                             to={subItem.path}
-                                            className={`block py-2 px-4 text-xs rounded-lg transition-colors ${
+                                            className={`block py-2 px-4  text-sm rounded-lg transition-colors ${
                                                 isActive(subItem.path)
                                                     ? "text-amber-600 font-bold bg-amber-50/50 dark:bg-amber-500/5 dark:text-amber-400"
                                                     : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
@@ -212,6 +212,7 @@ const AppSidebar: React.FC = () => {
             <Helmet>
                 <title>Admin Panel</title>
             </Helmet>
+
 
             <aside
                 className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 transition-all duration-300 ease-in-out z-50 border-r 
