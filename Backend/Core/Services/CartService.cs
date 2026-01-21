@@ -11,6 +11,13 @@ namespace Core.Services;
 public class CartService(IMapper mapper, IAuthService authService,
     AppDbContext context) : ICartService
 {
+    public async Task<bool> ClearCartAsync()
+    {
+        var userId = await authService.GetUserId();
+        await context.CartRecipes.Where(x => x.Cart.UserId == userId).ExecuteDeleteAsync();
+        return true;
+    }
+
     public async Task<CartItemModel> CreateAsync(CartCreateModel model)
     {
         var userId = await authService.GetUserId();
@@ -27,6 +34,8 @@ public class CartService(IMapper mapper, IAuthService authService,
         }
         else
             entity.Recipes?.Clear();
+
+        entity.Recipes = new List<CartRecipeEntity>();
 
         foreach (var recipe in model.Recipes!)
         {
@@ -91,7 +100,7 @@ public class CartService(IMapper mapper, IAuthService authService,
         return cart ?? new CartItemModel();
     }
 
-    public async Task<List<CartRecipeModel>> GetRecipesFromCart()
+    public async Task<List<CartRecipeModel>> GetRecipesFromCartAsync()
     {
         var userId = await authService.GetUserId();
         var entities = await context.CartRecipes.Where(x=>x.Cart.UserId == userId).Include(x=>x.Recipe).ToListAsync();
