@@ -9,4 +9,5 @@ public interface ICartService
     Task<CartItemModel> GetCartAsync();
     Task<List<CartRecipeModel>> GetRecipesFromCartAsync();
     Task<bool> ClearCartAsync();
+    Task<CartRecipeModel> AddOneRecipeAsync(CartCreateSingleItemModel model);
 }

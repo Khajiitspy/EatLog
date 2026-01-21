@@ -33,5 +33,11 @@ namespace API.Controllers
             var res = await cartService.ClearCartAsync();
             return Ok(res);
         }
+        [HttpPost("add-recipe")]
+        public async Task<IActionResult> AddOneRecipe(CartCreateSingleItemModel model)
+        {
+            var cart = await cartService.AddOneRecipeAsync(model);
+            return Ok(cart);
+        }
     }
 }

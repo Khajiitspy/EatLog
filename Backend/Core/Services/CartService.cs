@@ -11,6 +11,44 @@ namespace Core.Services;
 public class CartService(IMapper mapper, IAuthService authService,
     AppDbContext context) : ICartService
 {
+    public async Task<CartRecipeModel> AddOneRecipeAsync(CartCreateSingleItemModel model)
+    {
+        var userId = await authService.GetUserId();
+
+        var cart = await context.Carts.Include(c => c.Recipes).FirstOrDefaultAsync(c => c.UserId == userId);
+
+        if (cart == null)
+        {
+            cart = new CartEntity
+            {
+                UserId = userId,
+                Recipes = new List<CartRecipeEntity>()
+            };
+
+            context.Carts.Add(cart);
+        }
+
+        var existingRecipe = cart.Recipes.FirstOrDefault(r => r.RecipeId == model.RecipeId);
+
+        if (existingRecipe != null)
+        {
+            existingRecipe.Portion += model.Portion;
+        }
+        else
+        {
+            cart.Recipes.Add(new CartRecipeEntity
+            {
+                CartId = cart.Id,
+                RecipeId = model.RecipeId,
+                Portion = model.Portion
+            });
+        }
+
+        await context.SaveChangesAsync();
+        var entity = await context.CartRecipes.Where(x => x.Cart.UserId == userId && x.RecipeId == model.RecipeId).Include(x=>x.Recipe).FirstOrDefaultAsync();
+        return mapper.Map<CartRecipeModel>(entity);
+    }
+
     public async Task<bool> ClearCartAsync()
     {
         var userId = await authService.GetUserId();
