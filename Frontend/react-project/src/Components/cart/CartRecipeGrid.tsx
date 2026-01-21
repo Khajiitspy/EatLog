@@ -7,8 +7,7 @@ const CartRecipeGrid = ({ recipes }: { recipes: ICartRecipe[] }) => {
             {recipes.map((item) => (
                 <CartRecipeCard
                     key={item.recipeId}
-                    id={item.recipeId}
-                    portion={item.portion}
+                    recipe={item}
                 />
             ))}
         </div>

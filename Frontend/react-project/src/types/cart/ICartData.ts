@@ -14,6 +14,12 @@ export interface ICartIngredient {
 export interface ICartRecipe {
     recipeId: number;
     recipeName: string;
+    recipeImage: string;
+    portion: number;
+}
+
+export interface ICartAddRecipeRequest {
+    recipeId: number;
     portion: number;
 }
 

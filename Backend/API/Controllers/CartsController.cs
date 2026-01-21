@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Model.Cart;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CartsController(ICartService cartService) : ControllerBase
     {
         [HttpGet]
