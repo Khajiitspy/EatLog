@@ -91,6 +91,14 @@ public class CartService(IMapper mapper, IAuthService authService,
         return cart ?? new CartItemModel();
     }
 
+    public async Task<List<CartRecipeModel>> GetRecipesFromCart()
+    {
+        var userId = await authService.GetUserId();
+        var entities = await context.CartRecipes.Where(x=>x.Cart.UserId == userId).Include(x=>x.Recipe).ToListAsync();
+        var recipes = mapper.Map<List<CartRecipeModel>>(entities);
+        return recipes;
+    }
+
     private async Task CombineUnits(List<CartIngredientGroupModel> ingredients)
     {
         var kgUnit = await context.IngredientUnits

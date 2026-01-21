@@ -21,5 +21,11 @@ namespace API.Controllers
             var cart = await cartService.CreateAsync(model);
             return Ok(cart);
         }
+        [HttpGet("recipes")]
+        public async Task<IActionResult> GetRecipesFromCart()
+        {
+            var recipes = await cartService.GetRecipesFromCart();
+            return Ok(recipes);
+        }
     }
 }
