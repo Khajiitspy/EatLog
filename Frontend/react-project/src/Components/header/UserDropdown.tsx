@@ -1,128 +1,97 @@
-import {Dropdown} from "../UI/dropdown/Dropdown.tsx";
-import {DropdownItem} from "../UI/dropdown/DropdownItem.tsx";
 import {useNavigate} from "react-router";
-import {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {logout} from "../../store/authSlice.ts";
 import {APP_ENV} from "../../env";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCrown, faGear, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faCrown, faHouse, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export default function UserDropdown() {
     const { user } = useAppSelector(state=>state.auth);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const [isOpen, setIsOpen] = useState(false);
 
-    function toggleDropdown() {
-        setIsOpen(!isOpen);
-    }
-
-    function closeDropdown() {
-        setIsOpen(false);
-    }
 
     function logoutUser() {
         dispatch(logout());
         navigate('/');
     }
 
+    function openProfile(){
+        navigate("/account/profile");
+    }
+
+    function returnHome(){
+        navigate("/");
+    }
+
+
     return (
+        <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+                <button className="flex items-center gap-3 focus:outline-none group transition-all active:scale-95 text-left">
+                    {/* АВАТАР АДМІНІСТРАТОРА */}
+                    <div className="relative">
+                        <img
+                            src={`${APP_ENV.IMAGES_50_URL}${user?.image}`}
+                            alt="Admin Avatar"
+                            className="w-11 h-11 rounded-full border-2 border-yellow-400 shadow-lg shadow-yellow-400/20 object-cover p-0.5 transition-all duration-300"
+                        />
+                        <span className="absolute bottom-0 right-0 w-3.5 h-3.5 border-2 border-white dark:border-gray-950 rounded-full bg-yellow-400 flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                </span>
+                    </div>
 
-        <div className="relative">
-            <button
-                onClick={toggleDropdown}
-                className="flex items-center gap-3 focus:outline-none dropdown-toggle group"
+
+                    <div className="hidden md:flex flex-col leading-tight">
+                        <span className="text-sm font-bold text-gray-800 dark:text-white group-hover:text-yellow-500 transition-colors flex items-center gap-1.5 tracking-tighter">
+                            {user?.name}
+                            <FontAwesomeIcon icon={faCrown} className="text-yellow-400 text-[11px]" />
+                        </span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                            Адміністратор
+                        </span>
+                    </div>
+                </button>
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Content
+                sideOffset={8}
+                className="z-50 min-w-[200px] bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 p-1.5 animate-in fade-in zoom-in duration-200"
             >
-                {/* Аватар з рамкою та онлайн-крапкою з першого коду */}
-                <div className="relative">
-                    <img
-                        src={`${APP_ENV.IMAGES_50_URL}${user?.image}`}
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full border-2 border-amber-400 shadow-md object-cover p-0.5 transition-transform group-hover:scale-105"
-                    />
-                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-amber-500 border-2 border-white dark:border-gray-900 rounded-full flex items-center justify-center">
-                <div className="w-1 h-1 bg-white rounded-full"></div>
-            </span>
+                <div className="px-3 py-2 mb-1 border-b border-gray-100 dark:border-gray-800">
+                    <p className="text-[11px] text-gray-400 uppercase font-bold tracking-wider">Email</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 truncate font-medium">{user?.email}</p>
                 </div>
 
-                {/* Ім'я та статус Адміна */}
-                <div className="hidden md:flex flex-col items-start leading-tight">
-            <span className="text-sm font-bold text-slate-800 dark:text-gray-100 flex items-center gap-1">
-                {user?.name}
-                <FontAwesomeIcon icon={faCrown} className="text-amber-500 text-[12px]" />
-            </span>
-                    <span className="text-[10px] text-amber-600 dark:text-amber-400 font-black uppercase tracking-widest">
-                Адміністратор
-            </span>
-                </div>
-
-
-                <svg
-                    className={`text-gray-500 dark:text-gray-100 transition-transform duration-200 ${
-                        isOpen ? "rotate-180" : ""
-                    }`}
-                    width="18"
-                    height="20"
-                    viewBox="0 0 18 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <DropdownMenu.Item
+                    onClick={openProfile}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
                 >
-                    <path
-                        d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
-            </button>
+                    <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
+                    Профіль
+                </DropdownMenu.Item>
 
-            <Dropdown
-                isOpen={isOpen}
-                onClose={closeDropdown}
-                className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-900"
-            >
-                {/* Шапка дропдауну з поштою */}
-                <div className="px-3 py-2 border-b border-gray-100 dark:border-gray-800">
-                    <span className="ml-1.5 block text-[13px] text-gray-500 dark:text-gray-100 truncate">
-                      {user?.email}
-                    </span>
-                </div>
-
-                <ul className="flex flex-col gap-1 pt-3 pb-2 border-b border-gray-200 dark:border-gray-800">
-                    {/* Пункт Профіль */}
-                    <li>
-                        <DropdownItem
-                            onItemClick={() => {  closeDropdown(); }}
-                            className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                        >
-                            <FontAwesomeIcon icon={faUser} className="w-4 h-4 text-gray-500 group-hover:text-amber-500" />
-                            Мій профіль
-                        </DropdownItem>
-                    </li>
+                <DropdownMenu.Item
+                    onClick={returnHome}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
+                >
+                    <FontAwesomeIcon icon={faHouse} className="w-4 h-4" />
+                    Повернутися на головну
+                </DropdownMenu.Item>
 
 
-                    <li>
-                        <DropdownItem
-                            onItemClick={closeDropdown}
-                            className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-white/5 dark:hover:text-gray-300 "
-                        >
-                            <FontAwesomeIcon icon={faGear} className="w-4 h-4 text-gray-500 group-hover:text-amber-500" />
-                            Налаштування
-                        </DropdownItem>
-                    </li>
-                </ul>
 
-                {/* Кнопка Виходу */}
-                <button
-                    onClick={() => { logoutUser(); closeDropdown(); }}
-                    className="flex ml-1.5 items-center gap-3 px-3 py-2  font-medium text-red-500 rounded-lg group text-theme-sm hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                <DropdownMenu.Item
+                    onClick={logoutUser}
+                    className="flex items-center gap-3 ml-1 px-3 py-2 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg cursor-pointer outline-none transition-colors mt-1"
                 >
                     <FontAwesomeIcon icon={faRightFromBracket} className="w-4 h-4" />
-                    Вийти з акаунту
-                </button>
-            </Dropdown>
-        </div>
+                    Вийти
+                </DropdownMenu.Item>
+            </DropdownMenu.Content>
+
+
+        </DropdownMenu.Root>
     );
 }

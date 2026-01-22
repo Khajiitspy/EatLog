@@ -15,13 +15,20 @@ export const RecipeInstruction = ({ instruction, recipeId, onCopy }: Instruction
                 <span className="w-1 h-6  bg-indigo-400 rounded-full"></span>
                 Приготування
             </h2>
+
             <button
                 onClick={onCopy}
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 transition-colors cursor-pointer border border-slate-200"
+                className="w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300 cursor-pointer border
+                bg-gray-50 text-gray-400 border-gray-100
+                hover:bg-yellow-400 hover:text-gray-900 hover:border-yellow-400 hover:shadow-lg hover:shadow-yellow-400/30
+                dark:bg-gray-800 dark:text-gray-500 dark:border-gray-700
+                dark:hover:bg-yellow-400 dark:hover:text-gray-900 dark:hover:border-yellow-400
+                active:scale-90"
                 title="Копіювати текст"
             >
-                <FontAwesomeIcon icon={faCopy} size="sm" />
+                <FontAwesomeIcon icon={faCopy} className="text-sm" />
             </button>
+
         </div>
 
         <div className="bg-slate-50/30 p-6 md:p-8 rounded-3xl border border-slate-100">
@@ -30,10 +37,9 @@ export const RecipeInstruction = ({ instruction, recipeId, onCopy }: Instruction
             </p>
         </div>
 
-        <div className="flex gap-4 mt-10">
+        <div className="flex justify-end gap-4 mt-10">
             <Link
                 onClick={() => {
-                    // Миттєвий скрол при кліку
                     window.scrollTo(0, 0);
                 }}
                 to={`/recipes/edit/${recipeId}`}

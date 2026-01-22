@@ -133,5 +133,15 @@
     "Password": "GeorgePass753!",
     "PhoneNumber": "+1234567804",
     "Image": "https://thispersondoesnotexist.com/"
+  },
+  {
+    "UserName": "admin",
+    "FirstName": "Admin",
+    "LastName": "Admin",
+    "Email": "admin@example.com",
+    "Password": "Admin123!",
+    "PhoneNumber": "+1234567890",
+    "Image": "https://thispersondoesnotexist.com/",
+    "Roles": [ "Admin" ]
   }
 ]
