@@ -108,12 +108,12 @@ const MainSideBar = ({ isMobileOpen,closeMobileMenu }: SideBarProps) => {
                 </Link>
 
                 <Link
-                    to="/popular"
+                    to="/recipes"
                     onClick={closeMobileMenu}
                     className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-amber-400 transition"
                 >
                     <FontAwesomeIcon icon={faFire} className="w-4 h-4 text-gray-800 " />
-                    {!collapsed && <span className="text-sm font-medium">Популярні рецепти</span>}
+                    {!collapsed && <span className="text-sm font-medium">Всі рецепти</span>}
                 </Link>
 
                 <Link

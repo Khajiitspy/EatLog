@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useSelector } from "react-redux";
 import { APP_ENV } from "../../env";
 import { useSearchRecipesQuery } from "../../api/recipeService";
@@ -12,34 +12,79 @@ import AnimatedPage from "../../Components/layout/AnimatedPage";
 import type { RootState } from "../../store";
 
 export default function RecipesPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchRequest, setSearchRequest] = useState<{ SearchTerm?: string; UserId?: number; IsPublished?: boolean }>({});
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const [showAllPublic, setShowAllPublic] = useState(currentUser ? false : true);
 
-  // Update search request
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearchTerm = searchParams.get("q") || "";
+  const initialShowAllPublic = searchParams.get("public") === "true";
+
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [showAllPublic, setShowAllPublic] = useState( false );
+
+  const [searchRequest, setSearchRequest] = useState<{
+    SearchTerm?: string;
+    IsPublished?: boolean;
+    UserId?: number;
+  }>({});
+
+  // Update searchRequest whenever relevant state changes
   useEffect(() => {
-    setSearchRequest({
-      SearchTerm: searchTerm || undefined,
-      CurrentUser: !showAllPublic && !!currentUser,
-      IsPublished: showAllPublic || !currentUser ? true : undefined,
-    });
+    const req: {
+      SearchTerm?: string;
+      IsPublished?: boolean;
+      UserId?: number;
+    } = {};
+
+    if (searchTerm) req.SearchTerm = searchTerm;
+
+    if (!currentUser) {
+      // guest
+      req.IsPublished = true;
+    } else {
+      if (showAllPublic) {
+        // logged-in, browsing public
+        req.IsPublished = false;
+      } else {
+        // 🔑 MY RECIPES — use REAL ID
+        req.UserId = currentUser.id;
+      }
+    }
+
+    setSearchRequest(req);
   }, [searchTerm, currentUser, showAllPublic]);
+
+  // Sync input/checkbox with URL
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    if (searchTerm) params.q = searchTerm;
+    if (currentUser && showAllPublic) params.public = "true";
+    else params.public = "false";
+
+    setSearchParams(params);
+  }, [searchTerm, showAllPublic, currentUser, setSearchParams]);
 
   const { data: recipes, isLoading, error } = useSearchRecipesQuery(searchRequest);
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">Failed to load recipes</p>;
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <AnimatedPage>
       <PageContainer>
-        {/* Top row: header + create button */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        {/* Top header + create recipe */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
           <PageHeader
-            title={currentUser ? "My Recipes" : "Recipes"}
-            subtitle="Browse and manage your recipes"
+            title={
+              currentUser
+                ? showAllPublic
+                  ? "Публічні рецепти"
+                  : "Мої рецепти"
+                : "Всі рецепти"
+            }
+            subtitle="Переглядайте та керуйте своїми рецептами"
           />
+
           {currentUser && (
             <Link
               to="/recipes/create"
@@ -51,37 +96,46 @@ export default function RecipesPage() {
           )}
         </div>
 
-        {/* Second row: search + filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 items-start sm:items-center">
-          <div className="relative flex-1">
+        {/* Search + filter row */}
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mb-6 items-center">
+          <div className="relative flex-1 w-full sm:w-auto">
             <input
               type="text"
-              placeholder="Search recipes..."
+              placeholder="Пошук рецептів..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
+              onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
               className="w-full px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-300"
             />
-            <FontAwesomeIcon icon={faSearch} className="absolute right-3 top-2.5 text-slate-400" />
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="absolute right-3 top-2.5 text-slate-400"
+            />
           </div>
 
           {currentUser && (
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 mt-2 sm:mt-0">
               <input
                 type="checkbox"
                 checked={showAllPublic}
                 onChange={(e) => setShowAllPublic(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-amber-400 focus:ring-amber-300"
               />
-              <span className="text-sm text-slate-700">Show all public recipes</span>
+              Показати всі публічні рецепти
             </label>
           )}
         </div>
+
+        {/* Loading / error */}
+        {isLoading && <p className="text-center">Loading...</p>}
+        {error && <p className="text-center text-red-500">Failed to load recipes</p>}
 
         {/* Empty state */}
         {recipes?.length === 0 && (
           <Card className="text-center py-12">
             <p className="text-slate-500 mb-4">
-              {currentUser ? "У вас поки що немає створених рецептів" : "No recipes found"}
+              {currentUser
+                ? "У вас поки що немає створених рецептів"
+                : "No recipes found"}
             </p>
             {currentUser && (
               <Link
@@ -95,7 +149,7 @@ export default function RecipesPage() {
           </Card>
         )}
 
-        {/* Recipes grid */}
+        {/* Recipe grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {recipes?.items?.map((recipe) => (
             <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
@@ -112,7 +166,9 @@ export default function RecipesPage() {
                 <h3 className="text-xl font-semibold text-slate-800 group-hover:text-slate-900">
                   {recipe.name}
                 </h3>
-                {recipe.category && <p className="text-slate-500 mt-1 text-sm">{recipe.category.name}</p>}
+                {recipe.category && (
+                  <p className="text-slate-500 mt-1 text-sm">{recipe.category.name}</p>
+                )}
               </Card>
             </Link>
           ))}

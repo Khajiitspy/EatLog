@@ -9,6 +9,8 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import AnimatedPage from "../../Components/layout/AnimatedPage";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 
 export default function RecipeDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -17,6 +19,12 @@ export default function RecipeDetailsPage() {
   const [togglePublish] = useTogglePublishMutation();
   const [ingredientsOpen, setIngredientsOpen] = useState(true);
   const [localRecipe, setLocalRecipe] = useState(recipe);
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const isOwner = Boolean(
+    currentUser &&
+    recipe?.userId &&
+    recipe.userId === currentUser.id
+  );
   
   const navigate = useNavigate();
 
@@ -43,32 +51,34 @@ export default function RecipeDetailsPage() {
             {recipe.name}
           </h1>
       
-          <motion.button
-            layout
-            onClick={async () => {
-              // Toggle locally first (instant UI)
-              setLocalRecipe(prev => prev ? { ...prev, isPublished: !prev.isPublished } : prev);
+          {isOwner && (
+            <motion.button
+              layout
+              onClick={async () => {
+                // Toggle locally first (instant UI)
+                setLocalRecipe(prev => prev ? { ...prev, isPublished: !prev.isPublished } : prev);
 
-              // Then call server
-              await togglePublish(recipe.id);
-              refetch(); // optional to sync with server
-            }}
-            className={`
-              absolute top-4 right-4
-              inline-flex items-center gap-2
-              px-4 py-2 rounded-full
-              text-sm font-bold
-              transition-all duration-200
-              shadow-sm
-              active:scale-[0.97]
-              ${localRecipe?.isPublished
-                ? "bg-green-100 text-green-700 hover:bg-green-200"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"}
-            `}
-          >
-            <span className="text-base">{localRecipe?.isPublished ? "🌍" : "🔒"}</span>
-            {localRecipe?.isPublished ? "Опубліковано" : "Чернетка"}
-          </motion.button>
+                // Then call server
+                await togglePublish(recipe.id);
+                refetch(); // optional to sync with server
+              }}
+              className={`
+                absolute top-4 right-4
+                inline-flex items-center gap-2
+                px-4 py-2 rounded-full
+                text-sm font-bold
+                transition-all duration-200
+                shadow-sm
+                active:scale-[0.97]
+                ${localRecipe?.isPublished
+                  ? "bg-green-100 text-green-700 hover:bg-green-200"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"}
+              `}
+            >
+              <span className="text-base">{localRecipe?.isPublished ? "🌍" : "🔒"}</span>
+              {localRecipe?.isPublished ? "Опубліковано" : "Чернетка"}
+            </motion.button>
+          )}
 
           {recipe.image && (
             <img
@@ -138,30 +148,34 @@ export default function RecipeDetailsPage() {
           >
             {recipe.instruction}
           </p>
-          <Link
-            to={`/recipes/edit/${recipe.id}`}
-            className="inline-flex items-center gap-2 mt-6
-                       bg-amber-300 text-gray-900 px-5 py-3 rounded-xl font-bold
-                       hover:bg-amber-400 transition"
-          >
-            ✏️ Оновити рецепт
-          </Link>
-          <button
-            onClick={() => handleDelete(recipe.id)}
-            disabled={isDeleting}
-            title="Delete recipe"
-            className="
-              absolute bottom-4 right-4
-              p-3 rounded-full
-              bg-white/90 text-red-600
-              shadow-md border
-              hover:bg-red-50 hover:text-red-700
-              transition
-              disabled:opacity-50
-            "
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
+          {isOwner && (
+            <Link
+              to={`/recipes/edit/${recipe.id}`}
+              className="inline-flex items-center gap-2 mt-6
+                         bg-amber-300 text-gray-900 px-5 py-3 rounded-xl font-bold
+                         hover:bg-amber-400 transition"
+            >
+              ✏️ Оновити рецепт
+            </Link>
+          )}
+          {isOwner && (
+            <button
+              onClick={() => handleDelete(recipe.id)}
+              disabled={isDeleting}
+              title="Delete recipe"
+              className="
+                absolute bottom-4 right-4
+                p-3 rounded-full
+                bg-white/90 text-red-600
+                shadow-md border
+                hover:bg-red-50 hover:text-red-700
+                transition
+                disabled:opacity-50
+              "
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          )}
         </Card>
       </PageContainer>
     </AnimatedPage>

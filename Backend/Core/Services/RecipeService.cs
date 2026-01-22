@@ -83,25 +83,70 @@ public class RecipeService(
             TimeSpan.FromMinutes(CacheKeys.ListCacheTtlMinutes)
         );
     }
+
     public async Task<PagedResult<RecipeItemModel>> ListAsync(RecipeSearchRequest request)
     {
-        var isAdmin = await authService.IsAdminAsync();
-        var userId = await authService.GetUserId();
+        bool isAuthenticated = false;
+        bool isAdmin = false;
+        long? userId = null;
 
-        if (request.CurrentUser)
+        try
         {
-            request.UserId = userId; // override UserId with the current logged-in user
+            isAdmin = await authService.IsAdminAsync();
+            isAuthenticated = true;
+        }
+        catch
+        {
+            isAuthenticated = false;
         }
 
-        if (!isAdmin && userId != request.UserId)
+        if (isAuthenticated)
         {
-            request.IsDeleted = false;
+            try
+            {
+                userId = await authService.GetUserId();
+            }
+            catch
+            {
+                isAuthenticated = false;
+                userId = null;
+            }
+        }
 
+        // --------------------------------
+        // 🔒 NORMALIZE REQUEST
+        // --------------------------------
+
+        if (!isAuthenticated)
+        {
+            // Guest: only public, non-deleted
+            request.UserId = null;
+            request.IsDeleted = false;
             request.IsPublished = true;
         }
+        else
+        {
+            // Logged in
+            if (request.UserId.HasValue && request.UserId == userId)
+            {
+                // My recipes
+                request.IsDeleted = false;
+                request.IsPublished = null; // include both published & drafts
+            }
+            else
+            {
+                // Public browsing
+                request.UserId = null;
+                request.IsDeleted = false;
+                request.IsPublished = true;
+            }
 
-        if (userId == request.UserId)
-            request.IsDeleted = false;
+            if (isAdmin)
+            {
+                request.IsDeleted = null;
+                request.IsPublished = null;
+            }
+        }
 
         var query = context.Recipes.AsQueryable();
 
