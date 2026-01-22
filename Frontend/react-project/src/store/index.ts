@@ -8,6 +8,7 @@ import authReducer from './authSlice';
 import shoppingReducer from './shoppingSlice';
 import {type TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {cartService} from "../api/cartService.ts";
+import {adminService} from "../api/adminService.ts";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     [unitService.reducerPath]: unitService.reducer,
     [categoryService.reducerPath]: categoryService.reducer,
     [cartService.reducerPath]: cartService.reducer,
+    [adminService.reducerPath]: adminService.reducer,
     auth: authReducer,
     shopping: shoppingReducer
   },
@@ -27,7 +29,9 @@ export const store = configureStore({
         unitService.middleware,
         userService.middleware,
         ingredientService.middleware,
-        cartService.middleware),
+        cartService.middleware,
+        adminService.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

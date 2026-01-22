@@ -68,6 +68,15 @@ export const recipeService = createApi({
       }),
       invalidatesTags: ["Recipe"],
     }),
+
+    getAllRecipes: builder.query<IRecipeItem[], void>({
+      query: () => ({
+        url: "",
+        method: "GET",
+      }),
+      providesTags: ["Recipe"],
+    }),
+
   }),
 });
 
@@ -80,4 +89,5 @@ export const {
   useDeleteRecipeMutation,
   useTogglePublishMutation,
   useSearchRecipesQuery,
+  useGetAllRecipesQuery,
 } = recipeService;

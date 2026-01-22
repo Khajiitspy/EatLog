@@ -78,7 +78,6 @@ export default function RecipeDetailsPage() {
   return (
     <AnimatedPage>
       <PageContainer>
-
         <div className="mb-8">
           <button
               onClick={() => navigate(-1)}
@@ -94,8 +93,9 @@ export default function RecipeDetailsPage() {
       <Card className="
         overflow-hidden p-0 relative
         bg-white dark:bg-gray-900
-        border border-gray-100 dark:border-gray-800
-        shadow-xl shadow-gray-200/50 dark:shadow-none
+        border border-yellow-400/30
+        shadow-gray-300/40
+        shadow-xl dark:shadow-none
       ">
           <div className="p-6 md:p-10">
             {/* Header */}
@@ -126,18 +126,18 @@ export default function RecipeDetailsPage() {
                   {recipe.name}
                 </h1>
                 {recipe.category && (
-                  <span className="
-                    inline-block px-4 py-1 rounded-full text-sm font-semibold
-                    bg-indigo-50 text-indigo-600 border border-indigo-100
-                    dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20
-                  ">
+                    <span className="
+                    inline-block px-3 mt-2 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors duration-300
+                    bg-yellow-400 text-gray-950 shadow-sm shadow-yellow-400/20
+                    dark:bg-yellow-400/10 dark:text-yellow-400 dark:border dark:border-yellow-400/20
+                     ">
                     {recipe.category.name}
                   </span>
+
                 )}
               </div>
 
                 <div className="flex items-center gap-3 w-full lg:w-auto">
-                  {/* Portion selector */}
                   <div className="
                     flex-1 lg:flex-none p-3 rounded-2xl
                     bg-slate-50 dark:bg-gray-800
@@ -152,7 +152,7 @@ export default function RecipeDetailsPage() {
                     />
                   </div>
 
-                {/* Delete button */}
+
                 {isOwner && (
                   <button
                     onClick={handleDelete}
@@ -161,7 +161,7 @@ export default function RecipeDetailsPage() {
                     text-red-500 dark:text-red-400
                     border-red-100 dark:border-red-500/20
                     hover:bg-red-500 hover:text-white
-                     text-red-500 border border-red-100 dark:border-red-500/20 hover:bg-red-500 hover:text-white transition-all duration-300 active:scale-90 disabled:opacity-50 cursor-pointer"
+                    text-red-500 border border-red-100 dark:border-red-500/20 hover:bg-red-500 hover:text-white transition-all duration-300 active:scale-90 disabled:opacity-50 cursor-pointer"
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
@@ -180,7 +180,7 @@ export default function RecipeDetailsPage() {
                 </div>
             )}
 
-            {/* КОНТЕНТ: Інгредієнти та Інструкції */}
+
             <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
               <div className="md:col-span-1">
                 <RecipeIngredients ingredients={recipe.ingredients!} />

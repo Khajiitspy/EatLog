@@ -80,7 +80,6 @@ export default function RecipesPage() {
   return (
     <AnimatedPage>
       <PageContainer>
-        {/* Header + create recipe */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
           <PageHeader
             title={
@@ -94,13 +93,20 @@ export default function RecipesPage() {
           />
 
           {currentUser && (
-            <Link
-              to="/recipes/create"
-              className="flex items-center gap-2 bg-gray-800 text-white px-6 py-2 rounded-xl font-semibold hover:bg-slate-800 transition shadow"
-            >
-              <FontAwesomeIcon icon={faPlus} />
-              Створити рецепт
-            </Link>
+              <Link
+                  to="/recipes/create"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest transition-all duration-300 active:scale-95 shadow-lg
+                  /* Світла тема */
+                  bg-yellow-400 text-gray-950 hover:bg-yellow-500 shadow-yellow-400/20
+                  /* Темна тема */
+                  dark:bg-yellow-400 dark:text-gray-950 dark:hover:bg-yellow-500"
+              >
+                <div className="w-5 h-5 flex items-center justify-center  rounded-full">
+                  <FontAwesomeIcon icon={faPlus} className="text-[10px]" />
+                </div>
+                Створити рецепт
+              </Link>
+
           )}
         </div>
 
@@ -121,14 +127,26 @@ export default function RecipesPage() {
           </div>
 
           {currentUser && (
-            <label className="flex items-center gap-2 mt-2 sm:mt-0">
-              <input
-                type="checkbox"
-                checked={showAllPublic}
-                onChange={(e) => setShowAllPublic(e.target.checked)}
-              />
-              Показати всі публічні рецепти
-            </label>
+              <label className="group flex items-center gap-3 mt-4 sm:mt-0 cursor-pointer select-none">
+                <div className="relative">
+                  <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={showAllPublic}
+                      onChange={(e) => setShowAllPublic(e.target.checked)}
+                  />
+
+                  <div className="w-11 h-6 bg-gray-200 dark:bg-gray-800 rounded-full peer-checked:bg-yellow-400 transition-all duration-300 peer-focus:ring-4 peer-focus:ring-yellow-400/20"></div>
+
+
+                  <div className="absolute left-[3px] top-[3px] w-[18px] h-[18px] bg-white dark:bg-gray-200 rounded-full transition-all duration-300 peer-checked:translate-x-5 shadow-sm"></div>
+                </div>
+
+                <span className="text-[11px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 group-hover:text-yellow-500 dark:group-hover:text-yellow-400 transition-colors">
+                    Всі публічні рецепти
+                </span>
+              </label>
+
           )}
         </div>
 

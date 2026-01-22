@@ -42,8 +42,6 @@ function App() {
                 </Route>
 
 
-
-
                 <Route path={"admin"} element={<AdminLayout />}>
                     <Route path="home" element={<DashboardHome />}/>
 

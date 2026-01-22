@@ -2,7 +2,7 @@ import {Link, useNavigate} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../store";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {logout} from "../../store/authSlice.ts";
-import {faBars, faCrown, faLock, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faCartShopping, faCrown, faLock, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {APP_ENV} from "../../env";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {ThemeToggleButton} from "../../Components/common/ThemeToggleButton.tsx";
@@ -56,7 +56,6 @@ export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
                 </button>
             </div>
 
-            {/* Логотип для мобільних пристроїв */}
             <div className="absolute left-1/2 -translate-x-1/2 flex lg:hidden items-center pointer-events-none">
                 <Link
                     to="/"
@@ -88,13 +87,13 @@ export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
                                 </div>
 
                                 <div className="hidden md:flex flex-col items-start leading-tight text-left">
-                            <span className="text-sm font-bold text-gray-800 dark:text-gray-100 group-hover:text-yellow-500 transition-colors flex items-center gap-1">
-                                {user?.name}
-                                {user.roles.includes("Admin") && <FontAwesomeIcon icon={faCrown} className="text-yellow-400 text-[12px]" />}
-                            </span>
+                                    <span className="text-sm font-bold text-gray-800 dark:text-gray-100 group-hover:text-yellow-500 transition-colors flex items-center gap-1">
+                                        {user?.name}
+                                        {user.roles.includes("Admin") && <FontAwesomeIcon icon={faCrown} className="text-yellow-400 text-[12px]" />}
+                                    </span>
                                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
-                                {user.roles.includes("Admin") ? "Адміністратор" : "Користувач"}
-                            </span>
+                                        {user.roles.includes("Admin") ? "Адміністратор" : "Користувач"}
+                                    </span>
                                 </div>
                             </button>
                         </DropdownMenu.Trigger>
@@ -110,19 +109,29 @@ export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
 
                             <DropdownMenu.Item
                                 onClick={openProfile}
-                                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer outline-none transition-colors"
+                                className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
                             >
-                                <FontAwesomeIcon icon={faUser} className="w-4 h-4 opacity-70" />
+                                <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
                                 Профіль
+                            </DropdownMenu.Item>
+
+                            <DropdownMenu.Item>
+                            <Link
+                                to="/cart"
+                                className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
+                            >
+                                <FontAwesomeIcon icon={faCartShopping} className="w-5 h-5" />
+                                Кошик
+                            </Link>
                             </DropdownMenu.Item>
 
                             {user.roles.includes("Admin") && (
                                 <DropdownMenu.Item asChild>
                                     <Link
                                         to="/Admin/home"
-                                        className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
+                                        className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
                                     >
-                                        <FontAwesomeIcon icon={faLock} className="w-4 h-4" />
+                                        <FontAwesomeIcon icon={faLock} className="w-5 h-5" />
                                         Адмін панель
                                     </Link>
                                 </DropdownMenu.Item>
@@ -130,7 +139,7 @@ export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
 
                             <DropdownMenu.Item
                                 onClick={logoutUser}
-                                className="flex items-center gap-3 px-3 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg cursor-pointer outline-none transition-colors mt-1"
+                                className="flex items-center ml-1 gap-3 px-3 font-bold py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg cursor-pointer outline-none transition-colors mt-1"
                             >
                                 <FontAwesomeIcon icon={faRightFromBracket} className="w-4 h-4" />
                                 Вийти

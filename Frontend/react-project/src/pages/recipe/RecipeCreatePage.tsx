@@ -59,7 +59,16 @@ export default function RecipeCreatePage() {
     <AnimatedPage>
       <PageContainer>
         <div className="max-w-5xl mx-auto py-10 px-4 md:px-6">
-          <Card className="shadow-xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 rounded-[2.5rem] overflow-hidden">
+          <Card
+              className="
+              -mt-15 rounded-[2.5rem] overflow-hidden transition-all
+              bg-white
+              border border-yellow-400/30
+              shadow-xl shadow-gray-300/40
+              dark:bg-gray-900
+              dark:border-gray-800
+              dark:shadow-none"
+          >
             <div className="p-8 md:p-12">
               <PageHeader
                   title="Створення рецепту"
@@ -67,7 +76,7 @@ export default function RecipeCreatePage() {
 
               />
 
-              <form onSubmit={handleSubmit} className="mt-10 space-y-10">
+              <form onSubmit={handleSubmit} className="mt-6 space-y-10">
                 {/* Головна сітка на дві колонки */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
 
@@ -129,20 +138,32 @@ export default function RecipeCreatePage() {
                     </div>
                   </div>
 
-                  {/* ПРАВА КОЛОНКА */}
                   <div className="flex flex-col h-full">
-                    <label className="block text-[11px] font-black text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-widest ml-1">Інструкція приготування</label>
+                    <label className="block text-[11px] font-black text-gray-400 dark:text-gray-500 mb-2 uppercase tracking-widest ml-1 transition-colors duration-300">
+                      Інструкція приготування
+                    </label>
                     <textarea
-                        className={`w-full flex-grow px-5 py-4 rounded-2xl border outline-none transition-all resize-none text-gray-900 dark:text-white
-                  ${errors.Instruction
-                            ? "border-red-500 bg-red-50 dark:bg-red-950/20"
-                            : "bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-4 focus:ring-yellow-400/10"}`}
+                        className={`w-full flex-grow px-5 py-4 rounded-2xl border outline-none transition-all duration-300 resize-none 
+                        /* Базові кольори тексту */
+                        text-gray-900 dark:text-gray-100 
+                        /* Налаштування плейсхолдера */
+                        placeholder:text-gray-400 dark:placeholder:text-gray-600                   
+                        ${errors.Instruction
+                            ? "border-red-500 bg-red-50 dark:bg-red-500/10"
+                            : `bg-gray-50 dark:bg-gray-900/50 
+                           border-gray-100 dark:border-gray-800 
+                           focus:border-yellow-400 dark:focus:border-yellow-400 
+                            focus:ring-4 focus:ring-yellow-400/10`
+                        }`}
                         placeholder="Крок за кроком опишіть процес..."
                         value={instruction}
                         onChange={(e) => setInstruction(e.target.value)}
                         required
                     />
                   </div>
+
+
+
                 </div>
 
 

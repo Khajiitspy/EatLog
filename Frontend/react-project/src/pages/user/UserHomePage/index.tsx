@@ -19,7 +19,7 @@ const testimonials = [
         id: 2,
         name: "Максим Коваль",
         role: "Фуд-блогер",
-        text: "Дуже зручний інтерфейс! Можливість додавати власні пости та ділитися ними з друзями",
+        text: "Дуже зручний інтерфейс! Можливість додавати власні рецепти це дуже круто!",
         image: "https://i.pravatar.cc/150?u=2",
         rating: 5
     },
@@ -120,40 +120,65 @@ const UserHomePage: React.FC = () => {
         </section>
       )}
 
-      {/* Testimonials Section */}
-      <section className="py-10 px-6 bg-gray-50">
+
+      <section className="py-10 px-6 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-black dark:text-white text-slate-900 mb-4">
               Що говорять наші кулінари
             </h2>
-            <p className="text-slate-600 text-lg">Приєднуйтесь до тисяч задоволених користувачів EatLog</p>
+            <p className="text-slate-600 dark:text-white text-lg">Приєднуйтесь до тисяч задоволених користувачів EatLog</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((item) => (
-              <div key={item.id} className="bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100 relative hover:-translate-y-2 transition-transform duration-300">
-                <FontAwesomeIcon icon={faQuoteLeft} className="absolute top-6 right-8 text-amber-200 text-4xl opacity-50" />
-                <div className="flex gap-1 text-amber-400 mb-4">
-                  {[...Array(item.rating)].map((_, i) => (
-                    <FontAwesomeIcon key={i} icon={faStar} size="xs" />
-                  ))}
-                </div>
-                <p className="text-slate-700 italic mb-8 relative z-10">"{item.text}"</p>
-                <div className="flex items-center gap-4">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-amber-300"
-                  />
-                  <div>
-                    <h4 className="font-bold text-slate-900">{item.name}</h4>
-                    <p className="text-xs text-slate-500 uppercase tracking-wider">{item.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {testimonials.map((item) => (
+                    <div
+                        key={item.id}
+                        className="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 relative hover:-translate-y-2 transition-all duration-500 group"
+                    >
+                        {/* Велика декоративна лапка */}
+                        <FontAwesomeIcon
+                            icon={faQuoteLeft}
+                            className="absolute top-6 right-8 text-yellow-400/10 dark:text-yellow-400/5 text-6xl transition-colors group-hover:text-yellow-400/20"
+                        />
+
+                        {/* Рейтинг зірочками */}
+                        <div className="flex gap-1.5 text-yellow-400 mb-6">
+                            {[...Array(item.rating)].map((_, i) => (
+                                <FontAwesomeIcon key={i} icon={faStar} className="text-[10px]" />
+                            ))}
+                        </div>
+
+                        {/* Текст відгуку */}
+                        <p className="text-gray-600 dark:text-gray-400 italic mb-8 relative z-10 leading-relaxed font-medium">
+                            "{item.text}"
+                        </p>
+
+                        {/* Профіль автора */}
+                        <div className="flex items-center gap-4">
+                            <div className="relative">
+                                <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    className="w-14 h-14 rounded-2xl object-cover border-2 border-yellow-400 p-0.5 shadow-md shadow-yellow-400/20"
+                                />
+                                {/* Декоративний елемент поруч з фото */}
+                                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full border-2 border-white dark:border-gray-900"></div>
+                            </div>
+
+                            <div>
+                                <h4 className="font-black text-gray-900 dark:text-white tracking-tighter leading-none mb-1">
+                                    {item.name}
+                                </h4>
+                                <p className="text-[10px] font-black text-yellow-600 dark:text-yellow-400 uppercase tracking-widest">
+                                    {item.role}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
         </div>
       </section>
     </div>
