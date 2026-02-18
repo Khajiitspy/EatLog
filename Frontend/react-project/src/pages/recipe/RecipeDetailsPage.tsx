@@ -139,7 +139,7 @@ export default function RecipeDetailsPage() {
 
                 <div className="flex items-center gap-3 w-full lg:w-auto">
                   <div className="
-                    flex-1 lg:flex-none p-3 rounded-2xl
+                    h-[3.5rem] flex-1 lg:flex-none p-3 rounded-2xl
                     bg-slate-50 dark:bg-gray-800
                     border border-slate-100 dark:border-gray-700
                     flex items-center justify-between gap-4

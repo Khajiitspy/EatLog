@@ -7,7 +7,7 @@ const NotFoundPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen -mt-5 flex flex-col justify-center items-center bg-white dark:bg-gray-950 p-6 overflow-hidden relative">
+        <div className="min-h-screen -mt-5  flex flex-col justify-center items-center bg-white dark:bg-gray-950 p-6 overflow-hidden relative">
 
 
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
@@ -38,7 +38,7 @@ const NotFoundPage: React.FC = () => {
                 </p>
 
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col -mt-10 sm:flex-row gap-4">
                     <button
                         onClick={() => navigate(-1)}
                         className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest transition-all duration-300 active:scale-95 border-2 border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900"

@@ -6,7 +6,7 @@ import {
     faComments,
     faAngleLeft,
     faAngleRight,
-    faPlus, faGear, faRightToBracket, faUserPlus, faBowlFood,
+    faPlus, faGear, faRightToBracket, faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import {useState} from "react";
 import {useAppSelector} from "../../store";
@@ -95,7 +95,7 @@ const MainSideBar = ({ isMobileOpen,closeMobileMenu }: SideBarProps) => {
             <nav className="flex-1 space-y-2">
                 {[
                     { to: "/", icon: faHouse, label: "Головна" },
-                    { to: "/recipes?public=true", icon: faFire, label: "Всі рецепти" },
+                    { to: "/recipes/?public=true", icon: faFire, label: "Всі рецепти" },
                     { to: "/answers", icon: faComments, label: "Запитання", soon: true },
                 ].map((link) => {
                     const isActive = (location.pathname + location.search) === link.to;
@@ -145,14 +145,14 @@ const MainSideBar = ({ isMobileOpen,closeMobileMenu }: SideBarProps) => {
                             {(!collapsed || isMobileOpen) && <span className="text-sm font-black tracking-tight">Додати рецепт</span>}
                         </Link>
 
-                        <Link
-                            to="/recipes/"
+                 {/*       <Link
+                            to="/recipes/?public=false"
                             onClick={closeMobileMenu}
                             className="flex items-center gap-4 py-3.5 px-4 rounded-2xl transition-all hover:bg-yellow-400 hover:text-gray-900 group bg-gray-50 dark:bg-gray-900 shadow-sm"
                         >
                             <FontAwesomeIcon icon={faBowlFood} className="w-5 h-5 text-yellow-500 group-hover:text-gray-900" />
                             {(!collapsed || isMobileOpen) && <span className="text-sm font-black tracking-tight">Мої рецепти</span>}
-                        </Link>
+                        </Link>*/}
                     </div>
                 )}
             </nav>

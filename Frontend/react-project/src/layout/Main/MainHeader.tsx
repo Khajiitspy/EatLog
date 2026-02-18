@@ -2,7 +2,14 @@ import {Link, useNavigate} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../store";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {logout} from "../../store/authSlice.ts";
-import {faBars, faCartShopping, faCrown, faLock, faRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
+import {
+    faBars,
+    faBowlFood,
+    faCartShopping,
+    faCrown,
+    faLock,
+    faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import {APP_ENV} from "../../env";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {ThemeToggleButton} from "../../Components/common/ThemeToggleButton.tsx";
@@ -26,9 +33,6 @@ export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
         navigate('/');
     }
 
-    function openProfile(){
-        navigate("/account/profile");
-    }
 
     const handleLoginRedirect = () => {
         navigate('/account/login');
@@ -107,12 +111,22 @@ export const MainHeader = ({ toggleMobileMenu }: HeaderProps) => {
                                 <p className="text-sm text-gray-600 dark:text-gray-300 truncate font-medium">{user.email}</p>
                             </div>
 
-                            <DropdownMenu.Item
+                         {/*   <DropdownMenu.Item
                                 onClick={openProfile}
                                 className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
                             >
                                 <FontAwesomeIcon icon={faUser} className="w-4 h-4" />
                                 Профіль
+                            </DropdownMenu.Item>*/}
+
+                            <DropdownMenu.Item>
+                                <Link
+                                    to="/recipes/?public=false"
+                                    className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-gray-700 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-lg cursor-pointer outline-none transition-colors"
+                                >
+                                    <FontAwesomeIcon icon={faBowlFood} className="w-4 h-4" />
+                                    Мої рецепти
+                                </Link>
                             </DropdownMenu.Item>
 
                             <DropdownMenu.Item>
